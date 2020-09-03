@@ -1,7 +1,17 @@
 apiVersion: v2
-name: mongooseim-chart
-description: A Helm chart for MongooseIM in Kubernetes
-
+name: mongooseim
+description: MongooseIM — The best Enterprise Instant Messaging Solution is the one built for your business.
+keywords:
+  - mongooseim
+  - xmpp
+  - messaging
+  - chat
+  - erlang
 type: application
 version: 0.1.0
 appVersion: 3.7.1
+home: https://github.com/esl/MongooseIM
+icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+maintainers:
+  - name: MongooseIM Team
+    email: mongooseim@erlang-solutions.com
