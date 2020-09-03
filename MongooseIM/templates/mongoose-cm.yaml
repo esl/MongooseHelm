@@ -7,10 +7,10 @@ metadata:
 data:
   vm.args: |
     ## Name of the node.
-    -name mongooseim
+    -name {{ .Values.nodeName }}
 
     ## Cookie for distributed erlang
-    -setcookie mongooseim
+    -setcookie {{ .Values.nodeCookie }}
 
     ## Enable more processes (10M)
     +P 10000000

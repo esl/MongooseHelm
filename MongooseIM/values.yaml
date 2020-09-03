@@ -5,6 +5,9 @@ image:
   pullPolicy: IfNotPresent
   tag: ""
 
+nodeName: mongooseim
+nodeCookie: mongooseim
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
