@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongoose-nodeport
+  namespace:
+  labels:
+spec:
+  ports:
+  - protocol: TCP
+    port: 5222
+    targetPort: 5222
+  selector:
+    app: mongoose
+  type: NodePort

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongoosepush-cm
+  labels:
+    app: mongoosepush-cm
+data:
+  token.json: |
+    {
+      "type": "service_account",
+      "project_id": "sparrow-2b961",
+      "private_key_id": "852074dab9cd5914ff72917995bea0bea9a99483",
+      "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDSVjIS5BWJkAqr\nujXP3TmDwhiAS47AJInJ0R/8Wi3bH6sx6gp9/6RWiEVvq1pCrRxKg62SQQazcIjE\n4rjtbHAb8fSlfiw1w9/sm0Vj0lirVjJrxUsdJhvwb9wpXLLba+Uz2cOlGiib3E3/\nA5sIfeVwgkgXfojMOQY/MEugmHH9faMLEF9MwVPh5CrhRUUpjKNWJ/aQexS8TuHK\nlLu2LPT/PpmUKuZg7PHYGpML9zLiUwE4YRhDpRxsX6i3makR6y9Ducbak52DYYqu\nzA1N+KF+TyWdxlGrgn2RQnSojkZTOLT0LDKI7GFZ+DyFE6nTdgc1V/B4op5TOH98\nnPOAi41rAgMBAAECggEAQ39jrEpDWxS9R+SGtkDQ3yZfRHR6x9Ax43DXqdyqkIH2\nJxtq6IosC5TJa496dKEmzga5oZB6fQTk7wGuxIoi4+TeVGlL+Kj15/Df8Kukxr7v\niUQT2bPMDXloFmHoB5/1OpFsRkRBudqVsPtQOgZkpZk5V0jEz3yRM5/k9RFWqzib\n2CMxU07hqxSRaWiEpSu/HIOsCf2By45kl71lRz7WnPE5J6lK68ismdN6mNGZgjG6\nyte3iqzc/oCGCe0L6vncNcPKT8nYQsmqT9A7uBDK/P/uc3Li5UGNcXHc+7B1n2x8\npMv6IQOYH+a6nZjZEL8/YG3Vs7Q2aqnRmwC7hpO5sQKBgQD47tLmWNz3vkLGZ7ej\nOBCkNMGbuFU9q6F013VEpjgcedctTbf2NDOF4eN2BsH/9Tp//1FZtI63MJ0F8JbH\nT/5OS5uifHeQ7zylQ9FYJdLNbNmb8UoN2/vHXE31JRxk2qkFoYk7bY7eiLA1mc3P\nk9q5oHrSjEo9/PPVrWxINjat8wKBgQDYTt15dTXRkVza8zsBRR3sjVLrucIy1TmB\nRrMRlaIr/ZwIBhmDCPqD/xNuO0/s/2Naiztdr3MCBecfWGkrWitoHOpMZVzLSjJx\nZVlXp/oqOkyCzckIXt080pj0pIx2MjDPvzUxymjH84lc3XnL9n6o3fggRzOsu6/K\nT+XpSxhoqQKBgQC6V/USL+VBo3BTG2LxUM/MTB2+Vu+gWbFkSMFlIVSRpHd6V1pl\neFA1YZInUQm6dDVViae5EhtfcImq353PF8eTjq+zo57RpPTt9eVpKe8yjdAcFzTL\nSSih5SwKXbxylui96V1UWj//v6zAgyD4yYKLQGGQ6SnOW2OgSdDsAYFPFwKBgQCB\nXyHti+Hldrh/p6wpxUnxelEW9aIlvwvGux9MrB8zilpxHhzSF2Ol4MChVE4oZFLr\nC401KkNx+U/TmpBEQojlmy2zBYjreXQUCFbYK3pfGUE7lpLfM8XEo/yhjW0JIFm7\nVxQctH/Y31rPtRMsn0AABcpqm8tXS2YHbaQH1UdDCQKBgCY3HcRldFhi40yE7E/8\nXc4GBRP2tWlesQG354LxOjG1ILD0sBgnI/BQ19KBpp91s3yhfD0+QEevfwjlt7A6\nXMsG7cu+rFUj1e6UwADmZlOqBGWJsiws2gnJFhT8iPHau3j1r6avb8L9aOAFz3Ho\nrBLynIzir87CFJSolE+gWC8Z\n-----END PRIVATE KEY-----\n",
+      "client_email": "firebase-adminsdk-rf4g3@sparrow-2b961.iam.gserviceaccount.com",
+      "client_id": "118395517295133302308",
+      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+      "token_uri": "https://oauth2.googleapis.com/token",
+      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-rf4g3%40sparrow-2b961.iam.gserviceaccount.com"
+    }

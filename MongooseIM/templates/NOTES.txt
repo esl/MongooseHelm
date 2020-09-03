@@ -1,0 +1,12 @@
+Thank you for installing MongooseIM.
+
+Your release is named {{ .Release.Name }}.
+
+The chart version is {{ .Chart.Version }} and the application version is {{ .Chart.AppVersion }}.
+
+To learn more about the release, try:
+
+  $ helm status {{ .Release.Name }}
+  $ helm get all {{ .Release.Name }}
+
+(c) 2020 Erlang Solutions Ltd.

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: mongoosepush
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mpush
+  template:
+    metadata:
+      labels:
+        app: mpush
+    spec:
+      containers:
+      - name: mpush
+        image: mongooseim/mongoose-push:kubernetes
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: PUSH_APNS_ENABLED
+          value: "false"
+        volumeMounts:
+        - name: config-map
+          mountPath: /opt/app/priv/fcm
+      volumes:
+      - name: config-map
+        configMap:
+          name: mongoosepush-cm
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongoosepush
+  namespace: default
+spec:
+  clusterIP: None
+  ports:
+  - port: 8443
+    targetPort: 8443
+  selector:
+    app: mpush

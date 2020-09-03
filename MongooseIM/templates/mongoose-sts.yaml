@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongoose
+  namespace:
+  labels:
+    type: statefulset
+spec:
+  serviceName: mongoose
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mongoose
+  template:
+    metadata:
+      labels:
+        app: mongoose
+    spec:
+      subdomain: mongoose
+      containers:
+      - name: mongoose
+        image: mongooseim/mongooseim:kubernetes
+        env:
+          - name: MASTER_ORDINAL
+            value: "0"
+          - name: NODE_TYPE
+            value: "name"
+        ports:
+        - name: epmd
+          containerPort: 4369
+        - name: c2s
+          containerPort: 5222
+        - name: s2s
+          containerPort: 5269
+        - name: bosh
+          containerPort: 5280
+        - name: erlang-dist
+          containerPort: 9100
+        readinessProbe:
+          tcpSocket:
+            port: c2s
+          initialDelaySeconds: 60
+          periodSeconds: 10
+        volumeMounts:
+        - name: config-map
+          mountPath: /member
+        - name: mnesia
+          mountPath: /var/lib/mongooseim
+      volumes:
+      - name: config-map
+        configMap:
+          name: mongooseim
+  volumeClaimTemplates:
+  - metadata:
+      name: mnesia
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi
