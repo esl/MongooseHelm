@@ -10,15 +10,9 @@ data:
     -name mongooseim
 
     ## Cookie for distributed erlang
-    -setcookie ejabberd
+    -setcookie mongooseim
 
-    ## Heartbeat management; auto-restarts VM if it dies or becomes unresponsive
-    ## (Disabled by default..use with caution!)
-    ##-heart
-
-    ## Enable kernel poll and a few async threads
-    +K true
-    +A 5
+    ## Enable more processes (10M)
     +P 10000000
 
     ## Increase number of concurrent ports/sockets
