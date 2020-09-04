@@ -1,9 +1,15 @@
 apiVersion: v2
-name: mongoosepush-chart
+name: mongoosepush
 description: A Helm chart for MongoosePush in Kubernetes
-
+keywords:
+  - mongoosepush
+  - messaging
+  - push notifications
+  - elixir
 type: application
-
 version: 0.1.0
-
 appVersion: 2.1.0
+home: https://github.com/esl/MongoosePush
+maintainers:
+  - name: MongooseIM Team
+    email: mongooseim@erlang-solutions.com
