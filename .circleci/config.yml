@@ -26,6 +26,7 @@ jobs:
           name: Create Packages
           command: |
             helm package MongooseIM/ MongoosePush/ && \
+            git checkout packages -- index.yaml '*.tgz' && \
             helm repo index ./ --url https://esl.github.io/MongooseHelm/
       - run:
           name: Configure Git
