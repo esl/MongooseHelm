@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mongoose
+  name: mongooseim
   namespace:
   labels:
     type: statefulset
 spec:
-  serviceName: mongoose
-  replicas: 3
+  serviceName: mongooseim
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: mongoose
+      app: mongooseim
   template:
     metadata:
       labels:
-        app: mongoose
+        app: mongooseim
     spec:
-      subdomain: mongoose
+      subdomain: mongooseim
       containers:
-      - name: mongoose
-        image: mongooseim/mongooseim:kubernetes
+      - name: mongooseim
+        image: {{ .Values.image.repository}}:{{ .Chart.AppVersion }}
         env:
           - name: MASTER_ORDINAL
             value: "0"
