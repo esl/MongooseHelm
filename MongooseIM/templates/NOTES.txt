@@ -1,12 +1,14 @@
-Thank you for installing MongooseIM.
+Thank you for installing MongooseIM {{ .Chart.AppVersion }}
 
-Your release is named {{ .Release.Name }}.
+This chart defines MongooseIM as a StatefulSet, which claims persistent volumes. When the chart is uninstalled, following kubernetes' policy, these persistent volumes are not reclaimed, so that information is not lost. Information about automating this can be found here: https://github.com/kubernetes/kubernetes/issues/55045
 
-The chart version is {{ .Chart.Version }} and the application version is {{ .Chart.AppVersion }}.
+Removing them manually might be necessary, for example when reinstalling. To remove one such volume, use a command like the following:
+  $ kubectl delete persistentvolumeclaim/mnesia-mongooseim-X
+where `X` is the appropriate numeric suffix.
 
 To learn more about the release, try:
-
-  $ helm status {{ .Release.Name }}
   $ helm get all {{ .Release.Name }}
+
+Or go to https://github.com/esl/MongooseIM
 
 (c) 2020 Erlang Solutions Ltd.
