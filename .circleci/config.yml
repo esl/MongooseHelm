@@ -23,21 +23,19 @@ jobs:
       - helm/install-helm-client:
           version: v3.3.0
       - run:
-          name: Create Packages
-          command: |
-            helm package MongooseIM/ MongoosePush/ && \
-            git checkout packages -- index.yaml '*.tgz' && \
-            helm repo index ./ --url https://esl.github.io/MongooseHelm/
-      - run:
           name: Configure Git
           command: |
             git config --global user.email "mongooseim@erlang-solutions.com"
             git config --global user.name "Mongoose"
       - run:
-          name: Generate commit with packages
+          name: Generate packages and orphan commit
           command: |
+            git fetch origin packages && \
+            helm package MongooseIM/ MongoosePush/ && \
+            git checkout origin/packages -- index.yaml '*.tgz' && \
             git checkout --orphan tmp && \
             git rm --cached . -r && \
+            helm repo index ./ --url https://esl.github.io/MongooseHelm/
             git add *.tgz index.yaml .circleci/config.yml && \
             git commit -m "Mongoose Charts"
       - run:
