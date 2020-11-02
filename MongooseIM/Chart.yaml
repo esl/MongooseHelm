@@ -9,7 +9,7 @@ keywords:
   - erlang
 type: application
 version: 0.1.0
-appVersion: 3.7.1
+appVersion: 4.0.0
 home: https://github.com/esl/MongooseIM
 icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
 maintainers:
