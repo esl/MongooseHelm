@@ -5,24 +5,8 @@ metadata:
   labels:
     app: mongooseim
 data:
-  vm.args: |
-    ## Name of the node.
-    -name {{ .Values.nodeName }}
-
-    ## Cookie for distributed erlang
-    -setcookie {{ .Values.nodeCookie }}
-
-    ## Enable more processes (10M)
-    +P 10000000
-
-    ## Increase number of concurrent ports/sockets
-    -env ERL_MAX_PORTS 250000
-
-    ## Tweak GC to run more often
-    -env ERL_FULLSWEEP_AFTER 2
-
-    ## With lager sasl reports are redundant so turn them off
-    -sasl sasl_error_logger false
-
-    -kernel inet_dist_listen_min 9100
-    -kernel inet_dist_listen_max 9100
+  {{- $root := . }}
+  {{- range tuple "vm.args" "mongooseim.toml" }}
+  {{ . }}: |-
+    {{- tpl ($root.Files.Get .) $root | nindent 4}}
+  {{- end }}
