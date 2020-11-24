@@ -12,3 +12,4 @@ spec:
   selector:
     app: mongooseim
   type: LoadBalancer
+  loadBalancerIP: {{ .Values.loadBalancerIP }}

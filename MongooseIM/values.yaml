@@ -49,6 +49,8 @@ tolerations: []
 
 affinity: {}
 
+loadBalancerIP: ""
+
 nodeport:
   enabled: false
 
