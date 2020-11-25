@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: mongooseim/mongooseim
+  repository: mongooseim/mongoose-push
   pullPolicy: IfNotPresent
   tag: ""
 
@@ -37,7 +37,7 @@ resources: {}
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 12
+  maxReplicas: 50
   targetCPUUtilizationPercentage: 80
 
 nodeSelector: {}

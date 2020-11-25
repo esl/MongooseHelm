@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: mpush
-        image: mongooseim/mongoose-push:kubernetes
+        image: {{ .Values.image.repository }}:{{ .Chart.AppVersion }}
         imagePullPolicy: IfNotPresent
         env:
         - name: PUSH_APNS_ENABLED
