@@ -5,8 +5,7 @@ metadata:
   labels:
     app: mongooseim
 data:
-  {{- $root := . }}
-  {{- range tuple "vm.args" "mongooseim.toml" }}
-  {{ . }}: |-
-    {{- tpl ($root.Files.Get .) $root | nindent 4}}
-  {{- end }}
+  mongooseim.toml: |-
+      {{- tpl (.Files.Get "configs/mongooseim.toml") . | nindent 4 }}
+  vm.args: |-
+      {{- tpl (.Files.Get "configs/vm.args") . | nindent 4 }}
