@@ -6,6 +6,14 @@ metadata:
     app: mongooseim
 data:
   mongooseim.toml: |-
+    {{- if .Values.mimConfig }}
+      {{- printf "%s" (tpl .Values.mimConfig $) | nindent 4 }}
+    {{- else }}
       {{- tpl (.Files.Get "configs/mongooseim.toml") . | nindent 4 }}
+    {{- end }}
   vm.args: |-
+    {{- if .Values.vmConfig }}
+      {{- printf "%s" (tpl .Values.vmConfig $) | nindent 4 }}
+    {{- else }}
       {{- tpl (.Files.Get "configs/vm.args") . | nindent 4 }}
+    {{- end }}

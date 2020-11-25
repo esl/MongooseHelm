@@ -51,3 +51,6 @@ affinity: {}
 
 nodeport:
   enabled: false
+
+vmConfig: ""
+mimConfig: ""
