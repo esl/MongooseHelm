@@ -8,8 +8,8 @@ keywords:
   - chat
   - erlang
 type: application
-version: 0.2.0
-appVersion: 4.0.0
+version: 0.3.0
+appVersion: 4.0.1
 home: https://github.com/esl/MongooseIM
 icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
 maintainers:
