@@ -33,15 +33,15 @@ To uninstall, simply run `helm uninstall my-mongooseim`, where `my-mongooseim` i
 | `nodeName`         | Name of the nodes as containers                      | `mongooseim` |
 | `nodeCookie`       | Cookie to be used by the BEAM                        | `mongooseim` |
 | `replicaCount`     | Default number of replicas to be clustered           | `1`          |
-| `loadBalancerIP`   | Exposed external IP address for the Load Balancer    | not set (will be automatically assigned) |
-| `vmConfig`         | User-given `vm.args` file                            | not set (internal default, check sources) |
+| `loadBalancerIP`   | Exposed external IP address for the Load Balancer, it exposes the XMPP TCP interface | not set (will be automatically assigned) |
 | `mimConfig`        | User-given `mongooseim.toml` configuration file      | not set (internal default, check sources) |
+| `vmConfig`         | User-given `vm.args` file (used for tweaking the Erlang VM itself) | not set (internal default, check sources) |
 | `nodeport.enabled` | Whether the k8s nodeport service is desired          | `false`      |
 
 NOTE: `vmConfig` and `mimConfig` should be given using helm's `--set-file` directive, as below:
 
 ```sh
-helm install MongooseIM --set-file mimConfig=<path-to-mim-toml-config-file.toml>
+helm install mim mongoose/mongooseim --set-file mimConfig=<path-to-mim-toml-config-file.toml>
 ```
 
 ## Monitoring results
@@ -135,7 +135,7 @@ The LoadBalancer is the more convenient, but also the more expensive way of publ
 In order to do that, we first have to create a NodePort service:
 
 ```sh
-helm upgrade mim MongooseIM --set nodeport.enabled=true
+helm upgrade mim mongoose/mongooseim --set nodeport.enabled=true
 ```
 
 After a while it should appear in our monitoring window:

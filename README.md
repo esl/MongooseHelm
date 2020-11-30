@@ -2,11 +2,11 @@
 
 This repository contains a [StatefulSet][sts] definition describing a simple yet scalable and fault-tolerant MongooseIM cluster.
 
-MongooseIM pods use the already existing MongooseIM container available from [MongooseIM's DockerHub][MIM-docker] or [GitHub][MIM]. Likewise, MongoosePush uses the containers available from [Mongoose Push' dockerhub][MPush-docker].
+MongooseIM pods use the already existing MongooseIM container available from [MongooseIM's DockerHub][MIM-docker] or [GitHub][MIM]. Likewise, MongoosePush uses the containers available from [Mongoose Push' dockerhub][MPush-docker]. You can read more about them in their respective READMEs, for [MongooseIM](./MongooseIM/README.md) and [MongoosePush](./MongoosePush/README.md)
 
   * [Add this repo to your local helm](#add-this-repo-to-your-local-helm)
   * [Initialise a K8S cluster](#initialise-a-k8s-cluster)
-  * [How to recover the plain k8s files](#how-to-recover-the-plain-k8s-files)
+  * [How to get the plain k8s files](#how-to-get-the-plain-k8s-files)
 
 ## Add this repo to your local helm
 
@@ -41,10 +41,11 @@ Switching the context can be done using `NAME` from the above listing. Specifica
 
 ```
 kubectl config use-context CONTEXT-NAME
-kubectl config use-context docker-desktop  # if Docker Desktop with Kubernetes is enabled
+kubectl config use-context docker-desktop  # if using Docker Desktop with Kubernetes, or
+kubectl config use-context minikube  # if using minikube as the k8s cluster
 ```
 
-## How to recover the plain k8s files
+## How to get the plain k8s files
 
 If all you want is the plain k8s files, you can tell helm to expand the templates for you using the command
 
