@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongoose
+  name: mongooseim
   labels:
-    app: mongoose
+    app: mongooseim
 spec:
   ports:
   - name: epmd
@@ -23,4 +23,4 @@ spec:
     port: 9100
   clusterIP: None
   selector:
-    app: mongoose
+    app: mongooseim
