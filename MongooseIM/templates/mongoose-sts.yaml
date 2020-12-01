@@ -25,6 +25,8 @@ spec:
             value: "0"
           - name: NODE_TYPE
             value: "name"
+          - name: NODE_NAME
+            value: {{ .Values.nodeName }}
         ports:
         - name: epmd
           containerPort: 4369
