@@ -35,10 +35,11 @@ To uninstall, simply run `helm uninstall my-mongooseim`, where `my-mongooseim` i
 | `replicaCount`     | Default number of replicas to be clustered           | `1`          |
 | `loadBalancerIP`   | Exposed external IP address for the Load Balancer, it exposes the XMPP TCP interface | not set (will be automatically assigned) |
 | `mimConfig`        | User-given `mongooseim.toml` configuration file      | not set (internal default, check sources) |
+| `appConfig`        | User-given `app.config` configuration file           | not set (internal default, check sources) |
 | `vmConfig`         | User-given `vm.args` file (used for tweaking the Erlang VM itself) | not set (internal default, check sources) |
 | `nodeport.enabled` | Whether the k8s nodeport service is desired          | `false`      |
 
-NOTE: `vmConfig` and `mimConfig` should be given using helm's `--set-file` directive, as below:
+NOTE: `mimConfig`, `appConfig` and `vmConfig` should be given using helm's `--set-file` directive, as below:
 
 ```sh
 helm install mim mongoose/mongooseim --set-file mimConfig=<path-to-mim-toml-config-file.toml>

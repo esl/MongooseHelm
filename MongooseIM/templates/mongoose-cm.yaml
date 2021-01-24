@@ -5,6 +5,12 @@ metadata:
   labels:
     app: mongooseim
 data:
+  app.config: |-
+    {{- if .Values.appConfig }}
+      {{- printf "%s" (tpl .Values.appConfig $) | nindent 4 }}
+    {{- else }}
+      {{- tpl (.Files.Get "configs/app.config") . | nindent 4 }}
+    {{- end }}
   mongooseim.toml: |-
     {{- if .Values.mimConfig }}
       {{- printf "%s" (tpl .Values.mimConfig $) | nindent 4 }}
@@ -17,3 +23,9 @@ data:
     {{- else }}
       {{- tpl (.Files.Get "configs/vm.args") . | nindent 4 }}
     {{- end }}
+  {{- $files := .Files }}
+  {{- range $key, $value := .Files }}
+  {{- if hasPrefix "artifacts/" $key }} {{/* only when in config-dir/ */}}
+  {{ $key | trimPrefix "artifacts/" }}: {{ $files.Get $key | quote }} {{/* adapt $key as desired */}}
+  {{- end }}
+  {{- end }}
