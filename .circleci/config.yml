@@ -1,27 +1,27 @@
 version: 2.1
 
 orbs:
-  helm: circleci/helm@1.0.0
+  helm: circleci/helm@1.2.0
 
 jobs:
   helm-lint:
     docker:
-      - image: cimg/go:1.15.1
+      - image: cimg/go:1.15.6
     steps:
       - checkout
       - helm/install-helm-client:
-          version: v3.3.0
+          version: v3.5.0
       - run:
           name: Lint charts
           command: helm lint MongooseIM/ MongoosePush/
   packages-deploy:
     docker:
-      - image: cimg/go:1.15.1
+      - image: cimg/go:1.15.6
     steps:
       - checkout
       - add_ssh_keys
       - helm/install-helm-client:
-          version: v3.3.0
+          version: v3.5.0
       - run:
           name: Configure Git
           command: |
