@@ -30,6 +30,7 @@
   port = 5285
   transport.num_acceptors = 10
   transport.max_connections = 1024
+  tls.verify_mode = "none"
   tls.certfile = "priv/ssl/fake_cert.pem"
   tls.keyfile = "priv/ssl/fake_key.pem"
   tls.password =  ""
@@ -52,58 +53,23 @@
     host = "localhost"
     path = "/api"
 
+  [[listen.http.handlers.mongoose_domain_handler]]
+    host = "localhost"
+    path = "/api"
+
 [[listen.http]]
   port = 8089
   transport.num_acceptors = 10
   transport.max_connections = 1024
   protocol.compress = true
+  tls.verify_mode = "none"
   tls.certfile = "priv/ssl/fake_cert.pem"
   tls.keyfile = "priv/ssl/fake_key.pem"
   tls.password =  ""
 
-  [[listen.http.handlers.lasse_handler]]
+  [[listen.http.handlers.mongoose_client_api]]
     host = "_"
-    path = "/api/sse"
-    module = "mongoose_client_api_sse"
-
-  [[listen.http.handlers.mongoose_client_api_messages]]
-    host = "_"
-    path = "/api/messages/[:with]"
-
-  [[listen.http.handlers.mongoose_client_api_contacts]]
-    host = "_"
-    path = "/api/contacts/[:jid]"
-
-  [[listen.http.handlers.mongoose_client_api_rooms]]
-    host = "_"
-    path = "/api/rooms/[:id]"
-
-  [[listen.http.handlers.mongoose_client_api_rooms_config]]
-    host = "_"
-    path = "/api/rooms/[:id]/config"
-
-  [[listen.http.handlers.mongoose_client_api_rooms_users]]
-    host = "_"
-    path = "/api/rooms/:id/users/[:user]"
-
-  [[listen.http.handlers.mongoose_client_api_rooms_messages]]
-    host = "_"
-    path = "/api/rooms/[:id]/messages"
-
-  [[listen.http.handlers.cowboy_swagger_redirect_handler]]
-    host = "_"
-    path = "/api-docs"
-
-  [[listen.http.handlers.cowboy_swagger_json_handler]]
-    host = "_"
-    path = "/api-docs/swagger.json"
-
-  [[listen.http.handlers.cowboy_static]]
-    host = "_"
-    path = "/api-docs/[...]"
-    type = "priv_dir"
-    app = "cowboy_swagger"
-    content_path = "swagger"
+    path = "/api"
 
 [[listen.http]]
   ip_address = "127.0.0.1"
@@ -114,15 +80,16 @@
   [[listen.http.handlers.mongoose_api]]
     host = "localhost"
     path = "/api"
-    handlers = ["mongoose_api_metrics", "mongoose_api_users"]
 
 [[listen.c2s]]
   port = 5222
-  tls.certfile = "priv/ssl/fake_server.pem"
-  tls.mode = "starttls"
+  zlib = 10_000
   access = "c2s"
   shaper = "c2s_shaper"
   max_stanza_size = 65536
+  tls.verify_mode = "none"
+  tls.certfile = "priv/ssl/fake_server.pem"
+  tls.dhfile = "priv/ssl/fake_dh_server.pem"
 
 [[listen.s2s]]
   port = 5269
@@ -137,14 +104,14 @@
   password = "secret"
 
 [auth]
-  methods = ["internal"]
-  sasl_external = ["standard"]
 
-#[outgoing_pools.redis.global_distrib]
-#  scope = "single_host"
-#  host = "localhost"
-#  workers = 10
-#
+  [auth.password]
+    format = "scram"
+    hash = ["sha256"]
+    scram_iterations = 64
+
+  [auth.internal]
+
 #[outgoing_pools.rdbms.default]
 #  scope = "global"
 #  workers = 5
@@ -152,21 +119,16 @@
 #  [outgoing_pools.rdbms.default.connection]
 #    driver = "pgsql"
 #    host = "localhost"
-#    database = "ejabberd"
-#    username = "ejabberd"
+#    database = "mongooseim"
+#    username = "mongooseim"
 #    password = "mongooseim_secret"
 #    tls.required = true
-#    tls.verify_peer = true
 #    tls.cacertfile = "priv/ssl/cacert.pem"
-#    tls.server_name_indication = false
+#    tls.server_name_indication.enabled = false
 
 [services.service_admin_extra]
-  submods = ["node", "accounts", "sessions", "vcard", "gdpr", "upload",
-             "roster", "last", "private", "stanza", "stats"]
 
 [services.service_mongoose_system_metrics]
-  initial_report = 300_000
-  periodic_report = 10_800_000
 
 [modules.mod_adhoc]
 
@@ -191,9 +153,9 @@
 [modules.mod_blocking]
 
 [modules.mod_private]
+  backend = "mnesia"
 
 [modules.mod_register]
-  welcome_message = {body = "", subject = ""}
   ip_access = [
     {address = "127.0.0.0/8", policy = "allow"},
     {address = "0.0.0.0/0", policy = "deny"}
