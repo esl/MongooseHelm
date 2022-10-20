@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: mpush
-        image: {{ .Values.image.repository }}:{{ .Chart.AppVersion }}
+        image: {{ .Values.image.repository }}:{{or .Values.image.tag .Chart.AppVersion}}
         imagePullPolicy: IfNotPresent
         env:
         - name: PUSH_APNS_ENABLED
