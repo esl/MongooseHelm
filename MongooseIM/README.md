@@ -44,6 +44,16 @@ NOTE: `vmConfig` and `mimConfig` should be given using helm's `--set-file` direc
 helm install mim mongoose/mongooseim --set-file mimConfig=<path-to-mim-toml-config-file.toml>
 ```
 
+# Install custom application version
+
+Sometimes you want to use a non-default Docker image. It is possible by specifying `image.tag` value:
+
+```sh
+helm install "my-mongooseim" mongoose/mongooseim --set image.tag=PR-3796
+```
+
+Be aware, that the APP VERSION in the output of the `helm list` would not be correct in this case.
+
 ## Monitoring results
 
 When working with a Kubernetes cluster it's convenient to see the results of the actions taken. In order to do that, let's start a terminal window and run:

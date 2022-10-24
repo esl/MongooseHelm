@@ -7,7 +7,7 @@ keywords:
   - push notifications
   - elixir
 type: application
-version: 0.1.1
+version: 0.1.2
 appVersion: 2.1.0
 home: https://github.com/esl/MongoosePush
 maintainers:

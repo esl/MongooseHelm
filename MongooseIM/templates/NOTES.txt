@@ -1,4 +1,4 @@
-Thank you for installing MongooseIM {{ .Chart.AppVersion }}
+Thank you for installing MongooseIM {{or .Values.image.tag .Chart.AppVersion}}
 
 This chart defines MongooseIM as a StatefulSet, which claims persistent volumes. When the chart is uninstalled, following kubernetes' policy, these persistent volumes are not reclaimed, so that information is not lost. Information about automating this can be found here: https://github.com/kubernetes/kubernetes/issues/55045
 
