@@ -49,11 +49,7 @@
   transport.num_acceptors = 10
   transport.max_connections = 1024
 
-  [[listen.http.handlers.mongoose_api_admin]]
-    host = "localhost"
-    path = "/api"
-
-  [[listen.http.handlers.mongoose_domain_handler]]
+  [[listen.http.handlers.mongoose_admin_api]]
     host = "localhost"
     path = "/api"
 
@@ -73,13 +69,38 @@
 
 [[listen.http]]
   ip_address = "127.0.0.1"
-  port = 5288
+  port = 5551
   transport.num_acceptors = 10
   transport.max_connections = 1024
 
-  [[listen.http.handlers.mongoose_api]]
+  [[listen.http.handlers.mongoose_graphql_handler]]
     host = "localhost"
-    path = "/api"
+    path = "/api/graphql"
+    schema_endpoint = "admin"
+    username = "admin"
+    password = "secret"
+
+[[listen.http]]
+  ip_address = "0.0.0.0"
+  port = 5541
+  transport.num_acceptors = 10
+  transport.max_connections = 1024
+
+  [[listen.http.handlers.mongoose_graphql_handler]]
+    host = "_"
+    path = "/api/graphql"
+    schema_endpoint = "domain_admin"
+
+[[listen.http]]
+  ip_address = "0.0.0.0"
+  port = 5561
+  transport.num_acceptors = 10
+  transport.max_connections = 1024
+
+  [[listen.http.handlers.mongoose_graphql_handler]]
+    host = "_"
+    path = "/api/graphql"
+    schema_endpoint = "user"
 
 [[listen.c2s]]
   port = 5222
@@ -134,12 +155,6 @@
 
 [modules.mod_disco]
   users_can_see_hidden_services = false
-
-[modules.mod_commands]
-
-[modules.mod_muc_commands]
-
-[modules.mod_muc_light_commands]
 
 [modules.mod_last]
 
