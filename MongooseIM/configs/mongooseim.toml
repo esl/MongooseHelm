@@ -21,11 +21,6 @@
     host = "_"
     path = "/ws-xmpp"
 
-    [listen.http.handlers.mod_websockets.service]
-      access = "all"
-      shaper_rule = "fast"
-      password = "secret"
-
 [[listen.http]]
   port = 5285
   transport.num_acceptors = 10
@@ -33,7 +28,7 @@
   tls.verify_mode = "none"
   tls.certfile = "priv/ssl/fake_cert.pem"
   tls.keyfile = "priv/ssl/fake_key.pem"
-  tls.password =  ""
+  tls.password = ""
 
   [[listen.http.handlers.mod_bosh]]
     host = "_"
@@ -61,7 +56,7 @@
   tls.verify_mode = "none"
   tls.certfile = "priv/ssl/fake_cert.pem"
   tls.keyfile = "priv/ssl/fake_key.pem"
-  tls.password =  ""
+  tls.password = ""
 
   [[listen.http.handlers.mongoose_client_api]]
     host = "_"
@@ -104,7 +99,6 @@
 
 [[listen.c2s]]
   port = 5222
-  zlib = 10_000
   access = "c2s"
   shaper = "c2s_shaper"
   max_stanza_size = 65536
@@ -176,6 +170,8 @@
     {address = "0.0.0.0/0", policy = "deny"}
   ]
   access = "register"
+
+[modules.mod_presence]
 
 [modules.mod_roster]
 
