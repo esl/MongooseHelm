@@ -17,6 +17,10 @@ spec:
         app: mongooseim
     spec:
       subdomain: mongooseim
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
       containers:
       - name: mongooseim
         image: {{ .Values.image.repository }}:{{or .Values.image.tag .Chart.AppVersion}}
