@@ -42,6 +42,12 @@ spec:
           containerPort: 5280
         - name: erlang-dist
           containerPort: 9100
+        - name: gql-admin
+          containerPort: 5551
+        - name: gql-dom-admin
+          containerPort: 5541
+        - name: gql-user
+          containerPort: 5561
         readinessProbe:
           tcpSocket:
             port: c2s

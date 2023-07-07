@@ -19,8 +19,17 @@ spec:
     port: 5280
     targetPort: 5280
   - name: erlang-dist
-    targetPort: 9100
     port: 9100
+    targetPort: 9100
+  - name: gql-admin
+    port: 5551
+    targetPort: 5551
+  - name: gql-dom-admin
+    port: 5541
+    targetPort: 5541
+  - name: gql-user
+    port: 5561
+    targetPort: 5561
   clusterIP: None
   selector:
     app: mongooseim
