@@ -3,6 +3,10 @@ kind: Service
 metadata:
   name: mongooseim-lb
   namespace:
+  {{- if .Values.loadBalancerAnnotations }}
+  annotations:
+{{ toYaml .Values.loadBalancerAnnotations | indent 4 }}
+  {{- end }}
   labels:
 spec:
   ports:
@@ -21,4 +25,6 @@ spec:
   selector:
     app: mongooseim
   type: LoadBalancer
+  {{- if .Values.LoadBalancerIP }}
   loadBalancerIP: {{ .Values.loadBalancerIP }}
+  {{- end }}

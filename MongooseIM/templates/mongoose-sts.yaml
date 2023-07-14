@@ -8,6 +8,8 @@ metadata:
 spec:
   serviceName: mongooseim
   replicas: {{ .Values.replicaCount }}
+  updateStrategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       app: mongooseim
@@ -15,6 +17,10 @@ spec:
     metadata:
       labels:
         app: mongooseim
+      {{- if .Values.rolloutId }}
+      annotations:
+        rollout: {{ .Values.rolloutId }}
+      {{- end }}
     spec:
       subdomain: mongooseim
       {{- if .Values.nodeSelector }}
@@ -58,10 +64,20 @@ spec:
           mountPath: /member
         - name: mnesia
           mountPath: /var/lib/mongooseim
+        {{- if .Values.tlsCertSecret }}
+        - name: tls
+          mountPath: /usr/lib/mongooseim/priv/ssl
+          readOnly: true
+        {{- end }}
       volumes:
       - name: config-map
         configMap:
           name: mongooseim
+      {{- if .Values.tlsCertSecret }}
+      - name: tls
+        secret:
+          secretName: {{ .Values.tlsCertSecret }}
+      {{- end }}
   volumeClaimTemplates:
   - metadata:
       name: mnesia
