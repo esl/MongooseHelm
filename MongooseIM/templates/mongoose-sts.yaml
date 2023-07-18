@@ -8,6 +8,8 @@ metadata:
 spec:
   serviceName: mongooseim
   replicas: {{ .Values.replicaCount }}
+  updateStrategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       app: mongooseim
@@ -15,8 +17,16 @@ spec:
     metadata:
       labels:
         app: mongooseim
+      {{- if .Values.rolloutId }}
+      annotations:
+        rollout: {{ .Values.rolloutId }}
+      {{- end }}
     spec:
       subdomain: mongooseim
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
       containers:
       - name: mongooseim
         image: {{ .Values.image.repository }}:{{or .Values.image.tag .Chart.AppVersion}}
@@ -38,6 +48,12 @@ spec:
           containerPort: 5280
         - name: erlang-dist
           containerPort: 9100
+        - name: gql-admin
+          containerPort: 5551
+        - name: gql-dom-admin
+          containerPort: 5541
+        - name: gql-user
+          containerPort: 5561
         readinessProbe:
           tcpSocket:
             port: c2s
@@ -48,10 +64,20 @@ spec:
           mountPath: /member
         - name: mnesia
           mountPath: /var/lib/mongooseim
+        {{- if .Values.tlsCertSecret }}
+        - name: tls
+          mountPath: /usr/lib/mongooseim/priv/ssl
+          readOnly: true
+        {{- end }}
       volumes:
       - name: config-map
         configMap:
           name: mongooseim
+      {{- if .Values.tlsCertSecret }}
+      - name: tls
+        secret:
+          secretName: {{ .Values.tlsCertSecret }}
+      {{- end }}
   volumeClaimTemplates:
   - metadata:
       name: mnesia

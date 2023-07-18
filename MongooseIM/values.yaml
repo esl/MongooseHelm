@@ -50,9 +50,13 @@ tolerations: []
 affinity: {}
 
 loadBalancerIP: ""
+loadBalancerAnnotations: {}
 
 nodeport:
   enabled: false
 
 vmConfig: ""
 mimConfig: ""
+
+rolloutId: ""
+tlsCertSecret: {}

@@ -3,13 +3,28 @@ kind: Service
 metadata:
   name: mongooseim-lb
   namespace:
+  {{- if .Values.loadBalancerAnnotations }}
+  annotations:
+{{ toYaml .Values.loadBalancerAnnotations | indent 4 }}
+  {{- end }}
   labels:
 spec:
   ports:
-  - protocol: TCP
+  - name: c2s
+    protocol: TCP
     port: 5222
     targetPort: 5222
+  - name: gql-dom-admin
+    protocol: TCP
+    port: 5541
+    targetPort: 5541
+  - name: gql-user
+    protocol: TCP
+    port: 5561
+    targetPort: 5561
   selector:
     app: mongooseim
   type: LoadBalancer
+  {{- if .Values.LoadBalancerIP }}
   loadBalancerIP: {{ .Values.loadBalancerIP }}
+  {{- end }}

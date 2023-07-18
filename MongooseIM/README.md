@@ -32,11 +32,15 @@ To uninstall, simply run `helm uninstall my-mongooseim`, where `my-mongooseim` i
 |--------------------|------------------------------------------------------|--------------|
 | `nodeName`         | Name of the nodes as containers                      | `mongooseim` |
 | `nodeCookie`       | Cookie to be used by the BEAM                        | `mongooseim` |
+| `nodeSelector`     | [Node selector](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/) for the statefulset | not set |
 | `replicaCount`     | Default number of replicas to be clustered           | `1`          |
 | `loadBalancerIP`   | Exposed external IP address for the Load Balancer, it exposes the XMPP TCP interface | not set (will be automatically assigned) |
+| `loadBalancerAnnotations` | Additional annotations for the load balancer, e.g. to bind it to an AWS Elastic IP | not set |
 | `mimConfig`        | User-given `mongooseim.toml` configuration file      | not set (internal default, check sources) |
 | `vmConfig`         | User-given `vm.args` file (used for tweaking the Erlang VM itself) | not set (internal default, check sources) |
 | `nodeport.enabled` | Whether the k8s nodeport service is desired          | `false`      |
+| `rolloutId`        | Set it to a new value (e.g. random) to force rolling update with `helm upgrade` | not set - rolling update is performed only if the YAML files change |
+| `tlsCertSecret` | [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/) with the certificates referenced in `mongooseim.toml`. All files will be mounted in `priv/ssl`, replacing the default fake certificates, which should **not** be used in a production setup. | not set|
 
 NOTE: `vmConfig` and `mimConfig` should be given using helm's `--set-file` directive, as below:
 

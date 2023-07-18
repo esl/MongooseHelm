@@ -11,4 +11,4 @@ To learn more about the release, try:
 
 Or go to https://github.com/esl/MongooseIM
 
-(c) 2020 Erlang Solutions Ltd.
+(c) 2023 Erlang Solutions Ltd.
