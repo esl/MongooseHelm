@@ -1,3 +1,7 @@
+{{ if and (eq "cets" .Values.volatileDatabase) (ne "rdbms" .Values.persistentDatabase) -}}
+{{ required "CETS requires RDBMS for node discovery" "" -}}
+{{ end -}}
+
 [general]
   loglevel = "warning"
   default_server_domain = "localhost"
@@ -5,7 +9,9 @@
   registration_timeout = "infinity"
   language = "en"
   all_metrics_are_global = false
-  sm_backend = "mnesia"
+  sm_backend = "{{ .Values.volatileDatabase }}"
+  component_backend = "{{ .Values.volatileDatabase }}"
+  s2s_backend = "{{ .Values.volatileDatabase }}"
   max_fsm_queue = 1000
 
 [[listen.http]]
@@ -26,8 +32,8 @@
   transport.num_acceptors = 10
   transport.max_connections = 1024
   tls.verify_mode = "none"
-  tls.certfile = "priv/ssl/fake_cert.pem"
-  tls.keyfile = "priv/ssl/fake_key.pem"
+  tls.certfile = "priv/ssl/{{ .Values.certs.fullChain }}"
+  tls.keyfile = "priv/ssl/{{ .Values.certs.privKey }}"
   tls.password = ""
 
   [[listen.http.handlers.mod_bosh]]
@@ -54,8 +60,8 @@
   transport.max_connections = 1024
   protocol.compress = true
   tls.verify_mode = "none"
-  tls.certfile = "priv/ssl/fake_cert.pem"
-  tls.keyfile = "priv/ssl/fake_key.pem"
+  tls.certfile = "priv/ssl/{{ .Values.certs.fullChain }}"
+  tls.keyfile = "priv/ssl/{{ .Values.certs.privKey }}"
   tls.password = ""
 
   [[listen.http.handlers.mongoose_client_api]]
@@ -103,8 +109,7 @@
   shaper = "c2s_shaper"
   max_stanza_size = 65536
   tls.verify_mode = "none"
-  tls.certfile = "priv/ssl/fake_server.pem"
-  tls.dhfile = "priv/ssl/fake_dh_server.pem"
+  tls.certfile = "priv/ssl/{{ .Values.certs.fullChainWithKey }}"
 
 [[listen.s2s]]
   port = 5269
@@ -125,21 +130,30 @@
     hash = ["sha256"]
     scram_iterations = 64
 
+  {{ if eq "rdbms" .Values.persistentDatabase -}}
+  [auth.rdbms]
+  {{- else -}}
   [auth.internal]
+  {{- end }}
 
-#[outgoing_pools.rdbms.default]
-#  scope = "global"
-#  workers = 5
-#
-#  [outgoing_pools.rdbms.default.connection]
-#    driver = "pgsql"
-#    host = "localhost"
-#    database = "mongooseim"
-#    username = "mongooseim"
-#    password = "mongooseim_secret"
-#    tls.required = true
-#    tls.cacertfile = "priv/ssl/cacert.pem"
-#    tls.server_name_indication.enabled = false
+[internal_databases.{{ .Values.volatileDatabase }}]
+{{- if eq "rdbms" .Values.persistentDatabase }}
+{{- with .Values.rdbms }}
+
+[outgoing_pools.rdbms.default]
+  scope = "global"
+  workers = 5
+
+  [outgoing_pools.rdbms.default.connection]
+    driver = "{{ .driver }}"
+    host = "{{ .host }}"
+    database = "{{ .database }}"
+    username = "{{ .username }}"
+    password = "{{ .password }}"
+    tls.required = {{ .tls.required }}
+    tls.verify_mode = "none"
+{{- end }}
+{{- end }}
 
 [services.service_admin_extra]
 
@@ -151,18 +165,22 @@
   users_can_see_hidden_services = false
 
 [modules.mod_last]
+  backend = "{{ .Values.persistentDatabase }}"
 
 [modules.mod_stream_management]
+  backend = "{{ .Values.volatileDatabase }}"
 
 [modules.mod_offline]
   access_max_user_messages = "max_user_offline_messages"
+  backend = "{{ .Values.persistentDatabase }}"
 
 [modules.mod_privacy]
+  backend = "{{ .Values.persistentDatabase }}"
 
 [modules.mod_blocking]
 
 [modules.mod_private]
-  backend = "mnesia"
+  backend = "{{ .Values.persistentDatabase }}"
 
 [modules.mod_register]
   ip_access = [
@@ -174,13 +192,16 @@
 [modules.mod_presence]
 
 [modules.mod_roster]
+  backend = "{{ .Values.persistentDatabase }}"
 
 [modules.mod_sic]
 
 [modules.mod_vcard]
   host = "vjud.@HOST@"
+  backend = "{{ .Values.persistentDatabase }}"
 
 [modules.mod_bosh]
+  backend = "{{ .Values.volatileDatabase }}"
 
 [modules.mod_carboncopy]
 
@@ -283,7 +304,7 @@
 
 [s2s]
   use_starttls = "optional"
-  certfile = "priv/ssl/fake_server.pem"
+  certfile = "priv/ssl/{{ .Values.certs.fullChainWithKey }}"
   default_policy = "deny"
   outgoing.port = 5269
 

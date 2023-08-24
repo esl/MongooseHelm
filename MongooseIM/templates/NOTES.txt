@@ -1,10 +1,14 @@
 Thank you for installing MongooseIM {{or .Values.image.tag .Chart.AppVersion}}
 
+{{- if or (eq .Values.volatileDatabase "mnesia") (eq .Values.persistentDatabase "mnesia") }}
+
 This chart defines MongooseIM as a StatefulSet, which claims persistent volumes. When the chart is uninstalled, following kubernetes' policy, these persistent volumes are not reclaimed, so that information is not lost. Information about automating this can be found here: https://github.com/kubernetes/kubernetes/issues/55045
 
 Removing them manually might be necessary, for example when reinstalling. To remove one such volume, use a command like the following:
   $ kubectl delete persistentvolumeclaim/mnesia-mongooseim-X
 where `X` is the appropriate numeric suffix.
+
+{{- end }}
 
 To learn more about the release, try:
   $ helm get all {{ .Release.Name }}
