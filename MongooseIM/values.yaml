@@ -60,3 +60,20 @@ mimConfig: ""
 
 rolloutId: ""
 tlsCertSecret: {}
+
+volatileDatabase: "mnesia"
+persistentDatabase: "mnesia"
+
+rdbms:
+  driver: "pgsql"
+  host: "host.docker.internal"
+  database: "mongooseim"
+  username: "mongooseim"
+  password: "mongooseim_secret"
+  tls:
+    required: "true"
+
+certs:
+  fullChain: "fake_cert.pem"
+  privKey: "fake_key.pem"
+  fullChainWithKey: "fake_server.pem"
