@@ -26,7 +26,9 @@ This chart will install a MongooseIM cluster composed of a single node (set `rep
 
 To uninstall, simply run `helm uninstall my-mongooseim`, where `my-mongooseim` is the release name you've given to your installation.
 
-## Common parameters
+## Configuration
+
+Configuration can be done by providing parameters with `--set Key=Value` to the `helm install` command.
 
 | Parameter          | Description                                          | Default      |
 |--------------------|------------------------------------------------------|--------------|
@@ -36,19 +38,39 @@ To uninstall, simply run `helm uninstall my-mongooseim`, where `my-mongooseim` i
 | `replicaCount`     | Default number of replicas to be clustered           | `1`          |
 | `loadBalancerIP`   | Exposed external IP address for the Load Balancer, it exposes the XMPP TCP interface | not set (will be automatically assigned) |
 | `loadBalancerAnnotations` | Additional annotations for the load balancer, e.g. to bind it to an AWS Elastic IP | not set |
-| `mimConfig`        | User-given `mongooseim.toml` configuration file      | not set (internal default, check sources) |
-| `vmConfig`         | User-given `vm.args` file (used for tweaking the Erlang VM itself) | not set (internal default, check sources) |
 | `nodeport.enabled` | Whether the k8s nodeport service is desired          | `false`      |
-| `rolloutId`        | Set it to a new value (e.g. random) to force rolling update with `helm upgrade` | not set - rolling update is performed only if the YAML files change |
-| `tlsCertSecret` | [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/) with the certificates referenced in `mongooseim.toml`. All files will be mounted in `priv/ssl`, replacing the default fake certificates, which should **not** be used in a production setup. | not set|
+| `rolloutId`        | Random value used to force rolling update for each execution of `helm upgrade`. If you want a rolling update to happen only if the manifests change, set it to a constant value. | random string |
+| `tlsCertSecret`    | [Kubernetes secret](https://kubernetes.io/docs/concepts/configuration/secret/) with the certificates referenced in `mongooseim.toml`. All files will be mounted in `priv/ssl`, replacing the default fake certificates, which should **not** be used in a production setup. | not set|
+| `certs.*`    | File names for the certificate and private key used by the server. Use `tlsSecretCert` to provide the actual files. | Fake certificates, see [`values.yaml`](https://github.com/esl/MongooseHelm/blob/master/MongooseIM/values.yaml) |
+| `volatileDatabase`  | Database used to share in-memory data between cluster nodes. Set it to `cets` to use CETS instead of Mnesia. When doing so, you need to set `persistentDatabase` to `rdbms` for node discovery. | `mnesia` |
+| `persistentDatabase`| Database used for storing persistent data. Set it to `rdbms` to use an external relational database instead of Mnesia. | `mnesia` |
+| `rdbms.*`     | [Database options](https://esl.github.io/MongooseDocs/latest/configuration/outgoing-connections/#rdbms-options) | See [`values.yaml`](https://github.com/esl/MongooseHelm/blob/master/MongooseIM/values.yaml) |
+| `mimConfig`         | User-given `mongooseim.toml` configuration file | Generated from [template](https://github.com/esl/MongooseHelm/blob/master/MongooseIM/configs/mongooseim.toml) |
+| `vmConfig`          | User-given `vm.args` file (used for tweaking the Erlang VM itself) | Generated from [template](https://github.com/esl/MongooseHelm/blob/master/MongooseIM/configs/vm.args) |
 
-NOTE: `vmConfig` and `mimConfig` should be given using helm's `--set-file` directive, as below:
+We recommend the following way of configuring your setup:
+
+1. Configure the Kubernetes resources by with parameters like `nodeSelector`, `loadBalancerIP` and `loadBalancerAnnotations`, and make sure MongooseIM is starting with the default configuration.
+2. Configure MongooseIM, especially DB (`volatileDatabase`, `transientDatabase`, `rdbms.*`) and TLS (`tlsCertSecret`, `certs.*`). These parameters affect the `mongooseim.toml` configuration file generated from a [template](https://github.com/esl/MongooseHelm/blob/master/MongooseIM/configs/mongooseim.toml).
+3. If you still need more customization, use the generated `mongooseim.toml` as a starting point and provide your own version of it with the `mimConfig` parameter. You can also tweak the Erlang VM itself with `vmConfig`. These files should be given using helm's `--set-file` directive, as below:
 
 ```sh
 helm install mim mongoose/mongooseim --set-file mimConfig=<path-to-mim-toml-config-file.toml>
 ```
 
-# Install custom application version
+An alternative way of customization is to clone the [chart repo](https://github.com/esl/MongooseHelm), edit the configuration templates or `values.yaml`, and install the chart with `helm install mim <REPO_DIR>/MongooseIM`.
+
+### Database setup
+
+By default, MongooseIM is configured to use the Mnesia internal database for storing both in-memory and persistent data.
+This setup is prone to various Mnesia-related consistency and replication issues. Moreover, Mnesia requires persistent volumes, which consume your Kubernetes resources and need to be cleaned up manually after pod deletion.
+
+To completely avoid Mnesia with its issues, use different databases instead with the following parameters:
+
+* Set `persistentDatabase=rdbms` to use a relational database (e.g. PostgreSQL or MySQL) for persistent data. Connection details and credentials are provided with the `rdbms.*` parameters. DB setup is described in the [documentation](https://esl.github.io/MongooseDocs/latest/configuration/database-backends-configuration/#rdbms).
+* Set `volatileDatabase=cets` to use [CETS](https://github.com/esl/cets) for in-memory data. CETS needs a relational database for node discovery (unless you manually change the chart to use the file backend), so using it with `persistentDatabase=rdbms` is both required and recommended.
+
+### Install custom application version
 
 Sometimes you want to use a non-default Docker image. It is possible by specifying `image.tag` value:
 
