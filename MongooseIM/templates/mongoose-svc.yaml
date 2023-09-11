@@ -15,9 +15,12 @@ spec:
   - name: s2s
     port: 5269
     targetPort: 5269
-  - name: bosh
+  - name: bosh-ws
     port: 5280
     targetPort: 5280
+  - name: bosh-wss
+    port: 5285
+    targetPort: 5285
   - name: erlang-dist
     port: 9100
     targetPort: 9100
