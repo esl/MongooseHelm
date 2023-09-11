@@ -14,10 +14,14 @@ spec:
     protocol: TCP
     port: 5222
     targetPort: 5222
-  - name: bosh
+  - name: bosh-ws
     protocol: TCP
     port: 5280
     targetPort: 5280
+  - name: bosh-wss
+    protocol: TCP
+    port: 5285
+    targetPort: 5285
   - name: gql-dom-admin
     protocol: TCP
     port: 5541

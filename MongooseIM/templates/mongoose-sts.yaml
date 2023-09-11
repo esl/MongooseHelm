@@ -48,8 +48,10 @@ spec:
           containerPort: 5222
         - name: s2s
           containerPort: 5269
-        - name: bosh
+        - name: bosh-ws
           containerPort: 5280
+        - name: bosh-wss
+          containerPort: 5285
         - name: erlang-dist
           containerPort: 9100
         - name: gql-admin
