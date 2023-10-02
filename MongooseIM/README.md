@@ -47,12 +47,13 @@ Configuration can be done by providing parameters with `--set Key=Value` to the 
 | `rdbms.*`     | [Database options](https://esl.github.io/MongooseDocs/latest/configuration/outgoing-connections/#rdbms-options) | See [`values.yaml`](https://github.com/esl/MongooseHelm/blob/master/MongooseIM/values.yaml) |
 | `mimConfig`         | User-given `mongooseim.toml` configuration file | Generated from [template](https://github.com/esl/MongooseHelm/blob/master/MongooseIM/configs/mongooseim.toml) |
 | `vmConfig`          | User-given `vm.args` file (used for tweaking the Erlang VM itself) | Generated from [template](https://github.com/esl/MongooseHelm/blob/master/MongooseIM/configs/vm.args) |
+| `appConfig`         | User-given `app.config` configuration file | not set
 
 We recommend the following way of configuring your setup:
 
 1. Configure the Kubernetes resources by with parameters like `nodeSelector`, `loadBalancerIP` and `loadBalancerAnnotations`, and make sure MongooseIM is starting with the default configuration.
 2. Configure MongooseIM, especially DB (`volatileDatabase`, `transientDatabase`, `rdbms.*`) and TLS (`tlsCertSecret`, `certs.*`). These parameters affect the `mongooseim.toml` configuration file generated from a [template](https://github.com/esl/MongooseHelm/blob/master/MongooseIM/configs/mongooseim.toml).
-3. If you still need more customization, use the generated `mongooseim.toml` as a starting point and provide your own version of it with the `mimConfig` parameter. You can also tweak the Erlang VM itself with `vmConfig`. These files should be given using helm's `--set-file` directive, as below:
+3. If you still need more customization, use the generated `mongooseim.toml` as a starting point and provide your own version of it with the `mimConfig` parameter. You can also tweak the Erlang VM itself with `vmConfig` or customize Erlang application config with `appConfig`. These files should be given using helm's `--set-file` directive, as below:
 
 ```sh
 helm install mim mongoose/mongooseim --set-file mimConfig=<path-to-mim-toml-config-file.toml>

@@ -17,3 +17,7 @@ data:
     {{- else }}
       {{- tpl (.Files.Get "configs/vm.args") . | nindent 4 }}
     {{- end }}
+  {{- if .Values.appConfig }}
+  app.config: |-
+    {{- printf "%s" (tpl .Values.appConfig $) | nindent 4 }}
+  {{- end }}
