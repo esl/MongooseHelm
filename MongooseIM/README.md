@@ -47,7 +47,7 @@ Configuration can be done by providing parameters with `--set Key=Value` to the 
 | `rdbms.*`     | [Database options](https://esl.github.io/MongooseDocs/latest/configuration/outgoing-connections/#rdbms-options) | See [`values.yaml`](https://github.com/esl/MongooseHelm/blob/master/MongooseIM/values.yaml) |
 | `mimConfig`         | User-given `mongooseim.toml` configuration file | Generated from [template](https://github.com/esl/MongooseHelm/blob/master/MongooseIM/configs/mongooseim.toml) |
 | `vmConfig`          | User-given `vm.args` file (used for tweaking the Erlang VM itself) | Generated from [template](https://github.com/esl/MongooseHelm/blob/master/MongooseIM/configs/vm.args) |
-| `appConfig`         | User-given `app.config` configuration file | not set
+| `appConfig`         | User-given `app.config` configuration file | not set |
 
 We recommend the following way of configuring your setup:
 
