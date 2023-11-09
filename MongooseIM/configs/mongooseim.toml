@@ -137,6 +137,9 @@
   {{- end }}
 
 [internal_databases.{{ .Values.volatileDatabase }}]
+{{ if eq "cets" .Values.volatileDatabase -}}
+  wait_for_dns = true
+{{- end }}
 {{- if eq "rdbms" .Values.persistentDatabase }}
 {{- with .Values.rdbms }}
 
