@@ -1,4 +1,9 @@
 {{ if eq .Values.workloadAPI "Deployment" -}}
+{{ $mnesia_enabled := or (eq .Values.volatileDatabase "mnesia") (eq .Values.persistentDatabase "mnesia") -}}
+{{ if $mnesia_enabled -}}
+{{ required "Deployment does not support Mnesia" "" -}}
+{{ end -}}
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
