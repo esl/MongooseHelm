@@ -178,6 +178,7 @@
   backend = "{{ .Values.persistentDatabase }}"
 
 [modules.mod_blocking]
+  backend = "{{ .Values.persistentDatabase }}"
 
 [modules.mod_private]
   backend = "{{ .Values.persistentDatabase }}"
