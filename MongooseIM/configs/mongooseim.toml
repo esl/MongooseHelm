@@ -155,8 +155,6 @@
 {{- end }}
 {{- end }}
 
-[services.service_admin_extra]
-
 [services.service_mongoose_system_metrics]
 
 [modules.mod_adhoc]
