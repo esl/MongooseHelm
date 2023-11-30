@@ -18,3 +18,9 @@
 
 -kernel inet_dist_listen_min 9100
 -kernel inet_dist_listen_max 9100
+
+## Use a custom Erlang Port Mapper (EPMD) module
+## This module uses RDBMS and CETS to resolve node IP addresses
+{{ if and (eq "cets" .Values.volatileDatabase) (eq "rdbms" .Values.persistentDatabase) -}}
+-epmd_module mongoose_epmd
+{{ end -}}

@@ -42,6 +42,10 @@ spec:
             value: "name"
           - name: NODE_NAME
             value: {{ .Values.nodeName }}
+          - name: MIM_NODE_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
         ports:
         - name: epmd
           containerPort: 4369

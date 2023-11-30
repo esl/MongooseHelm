@@ -33,6 +33,8 @@ spec:
   - name: gql-user
     port: 5561
     targetPort: 5561
+  # Headless service
   clusterIP: None
+  publishNotReadyAddresses: true
   selector:
     app: mongooseim
