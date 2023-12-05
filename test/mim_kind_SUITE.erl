@@ -9,7 +9,7 @@ all() ->
     [{group, all}].
 
 groups() ->
-    [{all, [parallel], cases()}].
+    [{all, [sequence], cases()}].
 
 cases() ->
    [start_3_nodes_cluster,
@@ -50,17 +50,7 @@ upgrade_3_nodes_cluster(_Config) ->
     wait_for_upgrade().
 
 wait_for_upgrade() ->
-    Validator = fun({_, Text}) ->
-        Match = binary:match(Text, <<"statefulset rolling update complete 3 pods at revision">>),
-        Match =/= nomatch end,
-    %% Just "kubectl rollout status statefulset.apps/mongooseim" (blocking version)
-    %% would break with "error: object has been deleted" after 20 seconds.
-    %% Use active monitoring here.
-    Cmd = "kubectl rollout status statefulset.apps/mongooseim --watch=false",
-    WaitOpts = #{sleep_time => timer:seconds(1), validator => Validator, time_left => timer:seconds(180)},
-    test_wait:wait_until(fun() -> run(Cmd) end, true, WaitOpts),
-    ok.
-
+    run("kubectl rollout status statefulset.apps/mongooseim").
 
 run(Cmd) ->
     run(Cmd, #{}).
