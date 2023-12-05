@@ -1,5 +1,5 @@
 -module(test_wait).
--export([wait_until/2]).
+-export([wait_until/2, wait_until/3]).
 
 %% From mongoose_helper
 
