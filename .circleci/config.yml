@@ -82,13 +82,9 @@ jobs:
       - helm/install-helm-client:
           version: v3.5.0
       - run:
-          name: Run Helm Install
+          name: Run common tests
           command: |
-            helm install test-mim MongooseIM --set replicaCount=3
-      - run:
-          name: Logs
-          command: |
-            sleep 60 && kubectl logs mongooseim-0
+            rebar3 ct
 
 executors:
   otp_26:
