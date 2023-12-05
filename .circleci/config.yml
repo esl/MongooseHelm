@@ -2,6 +2,7 @@ version: 2.1
 
 references:
   - &OTP26 mongooseim/cimg-erlang:26.1.2
+  - &HELM_VERSION v3.10.1
 
 orbs:
   helm: circleci/helm@1.2.0
@@ -13,7 +14,7 @@ jobs:
     steps:
       - checkout
       - helm/install-helm-client:
-          version: v3.10.1
+          version: *HELM_VERSION
       - run:
           name: Lint charts
           command: helm lint MongooseIM/ MongoosePush/
@@ -24,7 +25,7 @@ jobs:
       - checkout
       - add_ssh_keys
       - helm/install-helm-client:
-          version: v3.5.0
+          version: *HELM_VERSION
       - run:
           name: Configure Git
           command: |
@@ -86,7 +87,7 @@ jobs:
             kubectl cluster-info --context kind-kind
             kubectl get pods --all-namespaces
       - helm/install-helm-client:
-          version: v3.5.0
+          version: *HELM_VERSION
       - run:
           name: Run common tests
           command: |
