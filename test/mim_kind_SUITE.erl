@@ -35,7 +35,9 @@ start_3_nodes_cluster(_Config) ->
     run("helm uninstall mim-test"),
     {0, _} = run("kubectl wait --for=delete pod mongooseim-0 --timeout=60s"),
     run("helm install mim-test MongooseIM " ++ format_args(helm_args(N))),
-    run("kubectl wait --for=condition=ready pod mongooseim-0"),
+    %% kubectl wait would fail until pod appears
+    %% (wait only works for existing resources https://github.com/kubernetes/kubectl/issues/1516)
+    run_wait("kubectl wait --for=condition=ready pod mongooseim-0"),
     run("kubectl exec -it mongooseim-0 -- mongooseimctl cets systemInfo"),
     LastNode = "mongooseim-" ++ integer_to_list(N - 1),
     run("kubectl wait statefulset mongooseim --for jsonpath=status.availableReplicas=3"),
@@ -67,7 +69,7 @@ install_pgsql() ->
     run("kubectl delete pvc data-ct-pg-postgresql-0"),
     run("helm install ct-pg oci://registry-1.docker.io/bitnamicharts/postgresql"),
     run("curl https://raw.githubusercontent.com/esl/MongooseIM/master/priv/pg.sql -o _build/pg.sql"),
-    run("kubectl wait --for=condition=ready pod ct-pg-postgresql-0"),
+    run_wait("kubectl wait --for=condition=ready pod ct-pg-postgresql-0"),
     run("kubectl cp test/init.sql ct-pg-postgresql-0:/tmp/init.sql"),
     run("kubectl cp _build/pg.sql ct-pg-postgresql-0:/tmp/pg.sql"),
     run("kubectl exec ct-pg-postgresql-0 -- sh -c 'PGPASSWORD=$POSTGRES_PASSWORD psql -U postgres -f /tmp/init.sql'"),
@@ -122,3 +124,8 @@ format_args(Map) ->
 
 format_arg(Key, Value) ->
     " --set " ++ Key ++ "=" ++ Value.
+
+%% Restarts if command returns non-zero code
+run_wait(Cmd) ->
+    {ok, Res} = test_wait:wait_until(fun() -> cmd(Cmd) end, true, #{validator => fun({Code, _}) -> Code =:= 0 end}),
+    Res.
