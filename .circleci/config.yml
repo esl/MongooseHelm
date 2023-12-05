@@ -60,6 +60,12 @@ jobs:
             chmod +x kind
             sudo mv kind /usr/local/bin/
       - run:
+          name: Install Rebar3
+          command: |
+            curl -Lo rebar3 https://s3.amazonaws.com/rebar3/rebar3
+            chmod +x rebar3
+            sudo mv rebar3 /usr/local/bin/
+      - run:
           name: Create Kubernetes Cluster
           command: |
             kind create cluster --loglevel debug
