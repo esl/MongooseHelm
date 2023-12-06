@@ -26,13 +26,16 @@ helm_args(N) ->
       "persistentDatabase" => "rdbms",
       "rdbms.username" => "mongooseim",
       "rdbms.database" => "mongooseim",
+      "rdbms.password" => "mongooseim",
+      "rdbms.host" => "ct-pg-postgresql.default.svc.cluster.local",
+      "rdbms.tls.required" => "false",
       "volatileDatabase" => "cets",
       "image.pullPolicy" => "Always"}.
 
 start_3_nodes_cluster(_Config) ->
+    run("helm uninstall mim-test"),
     install_pgsql(),
     N = 3,
-    run("helm uninstall mim-test"),
     {0, _} = run("kubectl wait --for=delete pod mongooseim-0 --timeout=60s"),
     run("helm install mim-test MongooseIM " ++ format_args(helm_args(N))),
     %% kubectl wait would fail until pod appears
@@ -74,6 +77,7 @@ install_pgsql() ->
     run("kubectl cp _build/pg.sql ct-pg-postgresql-0:/tmp/pg.sql"),
     run("kubectl exec ct-pg-postgresql-0 -- sh -c 'PGPASSWORD=$POSTGRES_PASSWORD psql -U postgres -f /tmp/init.sql'"),
     run("kubectl exec ct-pg-postgresql-0 -- sh -c 'PGPASSWORD=$POSTGRES_PASSWORD psql -U postgres -d mongooseim -f /tmp/pg.sql'"),
+    run("kubectl exec ct-pg-postgresql-0 -- sh -c 'PGPASSWORD=$POSTGRES_PASSWORD psql -U postgres -d mongooseim -c \"grant all privileges on all tables in schema public to mongooseim;\"'"),
     ok.
 
 cmd(Cmd) ->
