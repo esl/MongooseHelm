@@ -16,9 +16,9 @@ cases() ->
     upgrade_3_nodes_cluster].
 
 tag() ->
-    %% "PR-4182".
-    %% "latest".
-    "PR-4185".
+    %% You can specify a docker tag to test using:
+    %% "PR-4185".
+    "latest".
 
 helm_args(N) ->
     #{"image.tag" => tag(),
@@ -66,7 +66,7 @@ run(Cmd, Opts) ->
     {Code, Res}.
 
 install_pgsql() ->
-    %% See https://github.com/bitnami/charts/tree/main/bitnami/postgresql
+    %% Docs: https://github.com/bitnami/charts/tree/main/bitnami/postgresql
     run("helm uninstall ct-pg"),
     %% Remove old volume
     run("kubectl delete pvc data-ct-pg-postgresql-0"),
@@ -75,10 +75,16 @@ install_pgsql() ->
     run_wait("kubectl wait --for=condition=ready pod ct-pg-postgresql-0"),
     run("kubectl cp test/init.sql ct-pg-postgresql-0:/tmp/init.sql"),
     run("kubectl cp _build/pg.sql ct-pg-postgresql-0:/tmp/pg.sql"),
-    run("kubectl exec ct-pg-postgresql-0 -- sh -c 'PGPASSWORD=$POSTGRES_PASSWORD psql -U postgres -f /tmp/init.sql'"),
-    run("kubectl exec ct-pg-postgresql-0 -- sh -c 'PGPASSWORD=$POSTGRES_PASSWORD psql -U postgres -d mongooseim -f /tmp/pg.sql'"),
-    run("kubectl exec ct-pg-postgresql-0 -- sh -c 'PGPASSWORD=$POSTGRES_PASSWORD psql -U postgres -d mongooseim -c \"grant all privileges on all tables in schema public to mongooseim;\"'"),
+    run(psql(" -U postgres -f /tmp/init.sql")),
+    run(psql(" -U postgres -d mongooseim -f /tmp/pg.sql")),
+    run_psql_query("grant all privileges on all tables in schema public to mongooseim"),
     ok.
+
+psql(Args) ->
+    "kubectl exec ct-pg-postgresql-0 -- sh -c 'PGPASSWORD=$POSTGRES_PASSWORD psql " ++ Args ++ "'".
+
+run_psql_query(Query) ->
+    run(psql(" -U postgres -d mongooseim -c \"" ++ Query ++ "\"")).
 
 cmd(Cmd) ->
    cmd(Cmd, #{}).
