@@ -125,7 +125,7 @@ unavailable_nodes_count(Node) ->
     length(Unavailable).
 
 wait_for_joined_nodes_count(Node, ExpectedCount) ->
-    test_wait:wait_until(fun() -> joined_nodes_count(Node) end, ExpectedCount).
+    wait_helper:wait_until(fun() -> joined_nodes_count(Node) end, ExpectedCount).
 
 format_args(Map) ->
     lists:append([format_arg(Key, Value) || {Key, Value} <- maps:to_list(Map)]).
@@ -135,5 +135,6 @@ format_arg(Key, Value) ->
 
 %% Restarts if command returns non-zero code
 run_wait(Cmd) ->
-    {ok, Res} = test_wait:wait_until(fun() -> cmd(Cmd) end, true, #{validator => fun({Code, _}) -> Code =:= 0 end}),
+    V = fun({Code, _}) -> Code =:= 0 end,
+    {ok, Res} = wait_helper:wait_until(fun() -> cmd(Cmd) end, true, #{validator => V}),
     Res.
