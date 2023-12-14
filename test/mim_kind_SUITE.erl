@@ -99,9 +99,7 @@ cmd(Cmd, Opts) ->
 
 run_json(Cmd) ->
     {0, Text} = run(Cmd, #{stderr_to_stdout => false}),
-    JSON = jiffy:decode(Text, [return_maps]),
-    ct:pal("~p", [JSON]),
-    JSON.
+    jiffy:decode(Text, [return_maps]).
 
 receive_loop(Cmd, Port, Res) ->
     receive
