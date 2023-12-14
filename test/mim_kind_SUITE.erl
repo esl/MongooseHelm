@@ -13,7 +13,8 @@ groups() ->
 
 cases() ->
    [start_3_nodes_cluster,
-    upgrade_3_nodes_cluster].
+    upgrade_3_nodes_cluster,
+    pod_disappears].
 
 tag() ->
     %% You can specify a docker tag to test using:
@@ -33,8 +34,10 @@ helm_args(N) ->
       "image.pullPolicy" => "Always"}.
 
 start_3_nodes_cluster(_Config) ->
+install_db(mysql),
+ct:fail(fast),
     run("helm uninstall mim-test"),
-    install_pgsql(),
+    install_db(pgsql),
     N = 3,
     {0, _} = run("kubectl wait --for=delete pod mongooseim-0 --timeout=60s"),
     run("helm install mim-test MongooseIM " ++ format_args(helm_args(N))),
@@ -54,6 +57,11 @@ upgrade_3_nodes_cluster(_Config) ->
     run("helm upgrade mim-test MongooseIM " ++ format_args(helm_args(N))),
     wait_for_upgrade().
 
+pod_disappears(_Config) ->
+    {0, _} = run("kubectl delete pod mongooseim-1 --force"),
+    run("kubectl wait statefulset mongooseim --for jsonpath=status.availableReplicas=2"),
+    wait_for_joined_nodes_count("mongooseim-0", 2).
+
 wait_for_upgrade() ->
     run("kubectl rollout status statefulset.apps/mongooseim").
 
@@ -65,7 +73,19 @@ run(Cmd, Opts) ->
     ct:log("CMD ~ts~n~pms~nResult ~p ~ts", [Cmd, Diff, Code, Res]),
     {Code, Res}.
 
-install_pgsql() ->
+db_args() ->
+    #{"auth.database" => "mongooseim",
+      "auth.username" => "mongooseim",
+      "auth.password" => "mongooseim"}.
+
+install_db(mysql) ->
+    %% Docs: https://github.com/bitnami/charts/tree/main/bitnami/mysql
+    run("helm uninstall ct-mysql"),
+    run("helm install ct-mysql oci://registry-1.docker.io/bitnamicharts/mysql" ++ format_args(db_args())),
+    run("curl https://raw.githubusercontent.com/esl/MongooseIM/master/priv/mysql.sql -o _build/mysql.sql"),
+    run_wait("kubectl wait --for=condition=ready pod ct-mysql-0"),
+    ok;
+install_db(pgsql) ->
     %% Docs: https://github.com/bitnami/charts/tree/main/bitnami/postgresql
     run("helm uninstall ct-pg"),
     %% Remove old volume
