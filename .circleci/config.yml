@@ -1,5 +1,11 @@
 version: 2.1
 
+references:
+  - &OTP26 mongooseim/cimg-erlang:26.1.2
+  - &HELM_VERSION v3.10.1
+  - &KIND_VERSION v0.20.0
+  - &K8S_VERSION v1.27.3
+
 orbs:
   helm: circleci/helm@1.2.0
 
@@ -10,7 +16,7 @@ jobs:
     steps:
       - checkout
       - helm/install-helm-client:
-          version: v3.5.0
+          version: *HELM_VERSION
       - run:
           name: Lint charts
           command: helm lint MongooseIM/ MongoosePush/
@@ -21,7 +27,7 @@ jobs:
       - checkout
       - add_ssh_keys
       - helm/install-helm-client:
-          version: v3.5.0
+          version: *HELM_VERSION
       - run:
           name: Configure Git
           command: |
@@ -45,6 +51,58 @@ jobs:
             git reset tmp --hard && \
             git branch -D tmp && \
             git push origin packages --force
+  k8s-with-kind:
+    executor: otp_26
+    environment:
+      KIND_VERSION: *KIND_VERSION
+      K8S_VERSION: *K8S_VERSION
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Install KinD
+          command: |
+            curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/$KIND_VERSION/kind-linux-amd64
+            chmod +x kind
+            sudo mv kind /usr/local/bin/
+      - run:
+          name: Install Rebar3
+          command: |
+            curl -Lo rebar3 https://s3.amazonaws.com/rebar3/rebar3
+            chmod +x rebar3
+            sudo mv rebar3 /usr/local/bin/
+      - run:
+          name: Create Kubernetes Cluster
+          command: |
+            kind create cluster --loglevel debug
+      - run:
+          name: Install kubectl
+          command: |
+            curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/$K8S_VERSION/bin/linux/amd64/kubectl
+            chmod +x kubectl
+            sudo mv kubectl /usr/local/bin/
+      - run:
+          name: Port forwarding to the remote Docker
+          command: |
+            APISERVER_PORT=$(kubectl config view -o jsonpath='{.clusters[].cluster.server}' | cut -d: -f 3 -) && \
+            ssh -f -N -L 127.0.0.1:$APISERVER_PORT:127.0.0.1:$APISERVER_PORT remote-docker
+      - run:
+          name: Run Tests
+          command: |
+            kubectl cluster-info --context kind-kind
+            kubectl get pods --all-namespaces
+      - helm/install-helm-client:
+          version: *HELM_VERSION
+      - run:
+          name: Run common tests
+          command: |
+            rebar3 ct
+
+executors:
+  otp_26:
+    docker:
+      - image: *OTP26
+    resource_class: medium+
 
 workflows:
   version: 2
@@ -56,6 +114,7 @@ workflows:
               only: /.*/
             branches:
               ignore: packages
+      - k8s-with-kind
       - packages-deploy:
           requires:
             - helm-lint
