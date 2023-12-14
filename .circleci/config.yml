@@ -3,6 +3,8 @@ version: 2.1
 references:
   - &OTP26 mongooseim/cimg-erlang:26.1.2
   - &HELM_VERSION v3.10.1
+  - &KIND_VERSION v0.20.0
+  - &K8S_VERSION v1.27.3
 
 orbs:
   helm: circleci/helm@1.2.0
@@ -51,13 +53,16 @@ jobs:
             git push origin packages --force
   k8s-with-kind:
     executor: otp_26
+    environment:
+      KIND_VERSION: *KIND_VERSION
+      K8S_VERSION: *K8S_VERSION
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Install KinD
           command: |
-            curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.20.0/kind-linux-amd64
+            curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/$KIND_VERSION/kind-linux-amd64
             chmod +x kind
             sudo mv kind /usr/local/bin/
       - run:
@@ -73,7 +78,7 @@ jobs:
       - run:
           name: Install kubectl
           command: |
-            curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.27.3/bin/linux/amd64/kubectl
+            curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/$K8S_VERSION/bin/linux/amd64/kubectl
             chmod +x kubectl
             sudo mv kubectl /usr/local/bin/
       - run:
