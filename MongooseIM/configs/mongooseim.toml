@@ -150,7 +150,12 @@
     database = "{{ .database }}"
     username = "{{ .username }}"
     password = "{{ .password }}"
+    {{- if eq "pgsql" .driver }}
     tls.required = {{ .tls.required }}
+    {{- end }}
+    {{- if eq "mysql" .driver }}
+    tls.versions = ["tlsv1.2", "tlsv1.3"]
+    {{- end }}
     tls.verify_mode = "none"
 {{- end }}
 {{- end }}

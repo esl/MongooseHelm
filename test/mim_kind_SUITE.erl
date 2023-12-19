@@ -6,41 +6,56 @@
 -compile([export_all, nowarn_export_all]).
 
 all() ->
-    [{group, all}].
+    [{group, pgsql},
+     {group, mysql}].
 
 groups() ->
-    [{all, [sequence], cases()}].
+    [{pgsql, [sequence], cases()},
+     {mysql, [sequence], cases()}].
 
 cases() ->
    [start_3_nodes_cluster,
     upgrade_3_nodes_cluster,
     pod_disappears].
 
+init_per_group(pgsql, Config) ->
+    [{rdbms_driver, pgsql} | Config];
+init_per_group(mysql, Config) ->
+    [{rdbms_driver, mysql} | Config].
+
+end_per_group(_, Config) ->
+    Config.
+
 tag() ->
     %% You can specify a docker tag to test using:
     %% "PR-4185".
     "latest".
 
-helm_args(N) ->
+helm_args(N, Driver) ->
     #{"image.tag" => tag(),
       "replicaCount" => integer_to_list(N),
       "persistentDatabase" => "rdbms",
       "rdbms.username" => "mongooseim",
       "rdbms.database" => "mongooseim",
       "rdbms.password" => "mongooseim",
-      "rdbms.host" => "ct-pg-postgresql.default.svc.cluster.local",
+      "rdbms.driver" => atom_to_list(Driver),
+      "rdbms.host" => driver_to_host(Driver),
       "rdbms.tls.required" => "false",
       "volatileDatabase" => "cets",
       "image.pullPolicy" => "Always"}.
 
-start_3_nodes_cluster(_Config) ->
-install_db(mysql),
-ct:fail(fast),
+driver_to_host(pgsql) ->
+    "ct-pg-postgresql.default.svc.cluster.local";
+driver_to_host(mysql) ->
+    "ct-mysql.default.svc.cluster.local".
+
+start_3_nodes_cluster(Config) ->
+    Driver = proplists:get_value(rdbms_driver, Config),
     run("helm uninstall mim-test"),
-    install_db(pgsql),
+    install_db(Driver),
     N = 3,
     {0, _} = run("kubectl wait --for=delete pod mongooseim-0 --timeout=60s"),
-    run("helm install mim-test MongooseIM " ++ format_args(helm_args(N))),
+    run("helm install mim-test MongooseIM " ++ format_args(helm_args(N, Driver))),
     %% kubectl wait would fail until pod appears
     %% (wait only works for existing resources https://github.com/kubernetes/kubectl/issues/1516)
     run_wait("kubectl wait --for=condition=ready pod mongooseim-0"),
@@ -52,9 +67,10 @@ ct:fail(fast),
     ?assertEqual(0, unavailable_nodes_count("mongooseim-0")),
     ok.
 
-upgrade_3_nodes_cluster(_Config) ->
+upgrade_3_nodes_cluster(Config) ->
+    Driver = proplists:get_value(rdbms_driver, Config),
     N = 3,
-    run("helm upgrade mim-test MongooseIM " ++ format_args(helm_args(N))),
+    run("helm upgrade mim-test MongooseIM " ++ format_args(helm_args(N, Driver))),
     wait_for_upgrade().
 
 pod_disappears(_Config) ->
@@ -81,9 +97,13 @@ db_args() ->
 install_db(mysql) ->
     %% Docs: https://github.com/bitnami/charts/tree/main/bitnami/mysql
     run("helm uninstall ct-mysql"),
-    run("helm install ct-mysql oci://registry-1.docker.io/bitnamicharts/mysql" ++ format_args(db_args())),
+    %% Remove old volume
+    run("kubectl delete pvc data-ct-mysql-0"),
+    run("helm install ct-mysql oci://registry-1.docker.io/bitnamicharts/mysql " ++ format_args(db_args())),
     run("curl https://raw.githubusercontent.com/esl/MongooseIM/master/priv/mysql.sql -o _build/mysql.sql"),
     run_wait("kubectl wait --for=condition=ready pod ct-mysql-0"),
+    run("kubectl cp _build/mysql.sql ct-mysql-0:/tmp/mysql.sql"),
+    run("kubectl exec ct-mysql-0 -- sh -c 'mysql -u mongooseim -pmongooseim -D mongooseim < /tmp/mysql.sql'"),
     ok;
 install_db(pgsql) ->
     %% Docs: https://github.com/bitnami/charts/tree/main/bitnami/postgresql
@@ -145,7 +165,7 @@ unavailable_nodes_count(Node) ->
     length(Unavailable).
 
 wait_for_joined_nodes_count(Node, ExpectedCount) ->
-    wait_helper:wait_until(fun() -> joined_nodes_count(Node) end, ExpectedCount).
+    wait_helper:wait_until(fun() -> joined_nodes_count(Node) end, ExpectedCount, #{time_left => timer:seconds(30)}).
 
 format_args(Map) ->
     lists:append([format_arg(Key, Value) || {Key, Value} <- maps:to_list(Map)]).
