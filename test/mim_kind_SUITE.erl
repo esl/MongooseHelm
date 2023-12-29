@@ -124,7 +124,7 @@ install_db(mariadb) ->
     run("helm install ct-mariadb oci://registry-1.docker.io/bitnamicharts/mariadb-galera " ++ format_args(galera_db_args())),
     get_schema(mysql),
     Pod = "ct-mariadb-mariadb-galera-0",
-    run_wait("kubectl wait --for=condition=ready --timeout=1m pod " ++ Pod),
+    wait_for_pod_to_be_ready(Pod),
     run("kubectl cp _build/mysql.sql " ++ Pod ++ ":/tmp/mysql.sql"),
     run("kubectl exec " ++ Pod ++ " -- sh -c 'mariadb -u mongooseim -pmongooseim -D mongooseim < /tmp/mysql.sql'"),
     ok;
@@ -135,9 +135,10 @@ install_db(mysql) ->
     run("kubectl delete pvc data-ct-mysql-0"),
     run("helm install ct-mysql oci://registry-1.docker.io/bitnamicharts/mysql " ++ format_args(db_args())),
     get_schema(mysql),
-    run_wait("kubectl wait --for=condition=ready --timeout=1m pod ct-mysql-0"),
+    Pod = "ct-mysql-0",
+    wait_for_pod_to_be_ready(Pod),
     run("kubectl cp _build/mysql.sql ct-mysql-0:/tmp/mysql.sql"),
-    run("kubectl exec ct-mysql-0 -- sh -c 'mysql -u mongooseim -pmongooseim -D mongooseim < /tmp/mysql.sql'"),
+    run("kubectl exec " ++ Pod ++ " -- sh -c 'mysql -u mongooseim -pmongooseim -D mongooseim < /tmp/mysql.sql'"),
     ok;
 install_db(pgsql) ->
     %% Docs: https://github.com/bitnami/charts/tree/main/bitnami/postgresql
@@ -146,7 +147,8 @@ install_db(pgsql) ->
     run("kubectl delete pvc data-ct-pg-postgresql-0"),
     run("helm install ct-pg oci://registry-1.docker.io/bitnamicharts/postgresql"),
     get_schema(pgsql),
-    run_wait("kubectl wait --for=condition=ready --timeout=1m pod ct-pg-postgresql-0"),
+    Pod = "ct-pg-postgresql-0",
+    wait_for_pod_to_be_ready(Pod),
     run("kubectl cp test/init.sql ct-pg-postgresql-0:/tmp/init.sql"),
     run("kubectl cp _build/pg.sql ct-pg-postgresql-0:/tmp/pg.sql"),
     run(psql(" -U postgres -f /tmp/init.sql")),
@@ -217,3 +219,6 @@ run_wait(Cmd) ->
     V = fun({Code, _}) -> Code =:= 0 end,
     {ok, Res} = wait_helper:wait_until(fun() -> cmd(Cmd) end, true, #{validator => V}),
     Res.
+
+wait_for_pod_to_be_ready(Pod) ->
+    run_wait("kubectl wait --for=condition=ready --timeout=1m pod " ++ Pod).
