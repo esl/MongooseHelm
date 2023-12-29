@@ -122,7 +122,7 @@ install_db(mariadb) ->
     run("kubectl delete pvc data-ct-mariadb-mariadb-galera-0"),
     %% Check https://mariadb.com/kb/en/secure-connections-overview/ for TLS info
     run("helm install ct-mariadb oci://registry-1.docker.io/bitnamicharts/mariadb-galera " ++ format_args(galera_db_args())),
-    run("curl https://raw.githubusercontent.com/esl/MongooseIM/master/priv/mysql.sql -o _build/mysql.sql"),
+    get_schema(mysql),
     Pod = "ct-mariadb-mariadb-galera-0",
     run_wait("kubectl wait --for=condition=ready --timeout=1m pod " ++ Pod),
     run("kubectl cp _build/mysql.sql " ++ Pod ++ ":/tmp/mysql.sql"),
@@ -134,7 +134,7 @@ install_db(mysql) ->
     %% Remove old volume
     run("kubectl delete pvc data-ct-mysql-0"),
     run("helm install ct-mysql oci://registry-1.docker.io/bitnamicharts/mysql " ++ format_args(db_args())),
-    run("curl https://raw.githubusercontent.com/esl/MongooseIM/master/priv/mysql.sql -o _build/mysql.sql"),
+    get_schema(mysql),
     run_wait("kubectl wait --for=condition=ready --timeout=1m pod ct-mysql-0"),
     run("kubectl cp _build/mysql.sql ct-mysql-0:/tmp/mysql.sql"),
     run("kubectl exec ct-mysql-0 -- sh -c 'mysql -u mongooseim -pmongooseim -D mongooseim < /tmp/mysql.sql'"),
@@ -145,7 +145,7 @@ install_db(pgsql) ->
     %% Remove old volume
     run("kubectl delete pvc data-ct-pg-postgresql-0"),
     run("helm install ct-pg oci://registry-1.docker.io/bitnamicharts/postgresql"),
-    run("curl https://raw.githubusercontent.com/esl/MongooseIM/master/priv/pg.sql -o _build/pg.sql"),
+    get_schema(pgsql),
     run_wait("kubectl wait --for=condition=ready --timeout=1m pod ct-pg-postgresql-0"),
     run("kubectl cp test/init.sql ct-pg-postgresql-0:/tmp/init.sql"),
     run("kubectl cp _build/pg.sql ct-pg-postgresql-0:/tmp/pg.sql"),
@@ -153,6 +153,11 @@ install_db(pgsql) ->
     run(psql(" -U postgres -d mongooseim -f /tmp/pg.sql")),
     run_psql_query("grant all privileges on all tables in schema public to mongooseim"),
     ok.
+
+get_schema(mysql) ->
+    run("curl https://raw.githubusercontent.com/esl/MongooseIM/master/priv/mysql.sql -o _build/mysql.sql");
+get_schema(pgsql) ->
+    run("curl https://raw.githubusercontent.com/esl/MongooseIM/master/priv/pg.sql -o _build/pg.sql").
 
 psql(Args) ->
     "kubectl exec ct-pg-postgresql-0 -- sh -c 'PGPASSWORD=$POSTGRES_PASSWORD psql " ++ Args ++ "'".
