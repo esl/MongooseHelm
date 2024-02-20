@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
   name: mongoosepush
-  namespace: default
 spec:
   replicas: 1
   selector:
@@ -20,19 +19,28 @@ spec:
         env:
         - name: PUSH_APNS_ENABLED
           value: "false"
+        - name: PUSH_HTTPS_CERTFILE
+          value: /opt/app/priv/ssl/rest_cert.pem
+        - name: PUSH_HTTPS_KEYFILE
+          value: /opt/app/priv/ssl/rest_key.pem
         volumeMounts:
         - name: config-map
           mountPath: /opt/app/priv/fcm
+        - name: secret
+          readOnly: true
+          mountPath: /opt/app/priv/ssl
       volumes:
       - name: config-map
         configMap:
           name: mongoosepush-cm
+      - name: secret
+        secret:
+          secretName: mongoosepush-secret
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: mongoosepush
-  namespace: default
 spec:
   clusterIP: None
   ports:
