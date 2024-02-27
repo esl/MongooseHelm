@@ -65,6 +65,19 @@ spec:
           containerPort: 5541
         - name: gql-user
           containerPort: 5561
+        {{- if .Values.resources }}
+        {{-   with .Values.resources }}
+        resources:
+        {{-     if .limits }}
+          limits:
+            cpu: {{ .limits.cpu }}
+            memory: {{ .limits.memory }}
+        {{-     end }}
+          requests:
+            cpu: {{ .requests.cpu }}
+            memory: {{ .requests.memory }}
+        {{-   end }}
+        {{- end }}
         readinessProbe:
           tcpSocket:
             port: c2s
