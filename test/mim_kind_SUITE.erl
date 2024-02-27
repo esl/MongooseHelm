@@ -70,7 +70,7 @@ start_3_nodes_cluster(Config) ->
     %% kubectl wait would fail until pod appears
     %% (wait only works for existing resources https://github.com/kubernetes/kubectl/issues/1516)
     run_wait("kubectl wait --for=condition=ready pod mongooseim-0 --timeout=1m"),
-    run("kubectl exec -it mongooseim-0 -- mongooseimctl cets systemInfo"),
+    run("kubectl exec mongooseim-0 -- mongooseimctl cets systemInfo"),
     LastNode = "mongooseim-" ++ integer_to_list(N - 1),
     run("kubectl wait statefulset mongooseim --for jsonpath=status.availableReplicas=3 --timeout=2m"),
     run("kubectl wait --for=condition=ready --timeout=2m pod " ++ LastNode),
@@ -114,7 +114,7 @@ wait_for_upgrade() ->
 
 register_users(UserCount) ->
     Results = [register_user(N) || N <- lists:seq(1, UserCount)],
-    ct:pal("register_user result ~p", [hd(Results)]),
+    ct:pal("First register_user result ~p", [hd(Results)]),
     ok.
 
 stop_amoc() ->
@@ -259,7 +259,7 @@ receive_loop(Cmd, Port, Res) ->
     end.
 
 system_info(Node) ->
-    JSON = run_json("kubectl exec -it " ++ Node ++ " -- mongooseimctl cets systemInfo"),
+    JSON = run_json("kubectl exec " ++ Node ++ " -- mongooseimctl cets systemInfo"),
     #{<<"data">> := #{<<"cets">> := #{<<"systemInfo">> := Info}}} = JSON,
     Info.
 
@@ -268,7 +268,7 @@ joined_nodes_count(Node) ->
     length(Joined).
 
 session_count(Node) ->
-    JSON = run_json("kubectl exec -it " ++ Node ++ " -- mongooseimctl session countSessions"),
+    JSON = run_json("kubectl exec " ++ Node ++ " -- mongooseimctl session countSessions"),
     #{<<"data">> := #{<<"session">> := #{<<"countSessions">> := Count}}} = JSON,
     Count.
 
