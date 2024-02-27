@@ -36,6 +36,7 @@ Configuration can be done by providing parameters with `--set Key=Value` to the 
 | `nodeCookie`       | Cookie to be used by the BEAM                        | `mongooseim` |
 | `nodeSelector`     | [Node selector](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/) for the statefulset | not set |
 | `replicaCount`     | Default number of replicas to be clustered           | `1`          |
+| `resources`        | MongooseIM container `cpu` and `memory` [resource requests and limits](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container). If `resources` is defined, then `requests` must be present, while `limits` is optional.    | not set (unconstrained) |
 | `loadBalancerIP`   | Exposed external IP address for the Load Balancer, it exposes the XMPP TCP interface | not set (will be automatically assigned) |
 | `loadBalancerAnnotations` | Additional annotations for the load balancer, e.g. to bind it to an AWS Elastic IP | not set |
 | `nodeport.enabled` | Whether the k8s nodeport service is desired          | `false`      |
