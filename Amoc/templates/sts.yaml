@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: amoc-deployment
+  labels:
+    app: amoc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: amoc
+  template:
+    metadata:
+      labels:
+        app: amoc
+    spec:
+      containers:
+      - name: amoc
+        image: {{ .Values.image.name }}:{{ .Values.image.tag }}
