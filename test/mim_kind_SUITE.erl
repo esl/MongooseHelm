@@ -76,6 +76,9 @@ start_3_nodes_cluster(Config) ->
     run("kubectl wait --for=condition=ready --timeout=2m pod " ++ LastNode),
     wait_for_joined_nodes_count("mongooseim-0", N),
     ?assertEqual(0, unavailable_nodes_count("mongooseim-0")),
+    %% fetch last 10 log lines to avoid config-only entries
+    {0, LogBinary} = run("kubectl logs mongooseim-0 --tail 10"),
+    log_checker:check_logs(LogBinary),
     ok.
 
 upgrade_3_nodes_cluster(Config) ->
