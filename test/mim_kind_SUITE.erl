@@ -102,10 +102,9 @@ pod_disappears_with_users_connected(_Config) ->
     stop_amoc(),
     %% Inspect the session table
     try
-        wait_for_session_count("mongooseim-0", 0)
-    catch _:Reason ->
-        ct:pal("wait_for_session_count failed, ignore until we have a fix in MongooseIM~n"
-               "Reason ~p", [Reason])
+        wait_for_session_count("mongooseim-0", 0),
+        wait_for_session_count("mongooseim-1", 0),
+        wait_for_session_count("mongooseim-2", 0)
     after
         run("kubectl logs mongooseim-0"),
         run("kubectl logs mongooseim-1"),
