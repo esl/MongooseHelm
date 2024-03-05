@@ -52,10 +52,14 @@ jobs:
             git branch -D tmp && \
             git push origin packages --force
   k8s-with-kind:
+    parameters:
+      database:
+        type: string
     executor: otp_26
     environment:
       KIND_VERSION: *KIND_VERSION
       K8S_VERSION: *K8S_VERSION
+      DB: << parameters.database >>
     steps:
       - checkout
       - setup_remote_docker
@@ -114,7 +118,10 @@ workflows:
               only: /.*/
             branches:
               ignore: packages
-      - k8s-with-kind
+      - k8s-with-kind:
+          matrix:
+            parameters:
+              database: [mariadb, pgsql, mysql]
       - packages-deploy:
           requires:
             - helm-lint
