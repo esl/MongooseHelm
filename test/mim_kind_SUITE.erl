@@ -1,3 +1,5 @@
+%% To run only one database, use env variables:
+%% DB=mysql rebar3 ct
 -module(mim_kind_SUITE).
 -include_lib("common_test/include/ct.hrl").
 -include_lib("eunit/include/eunit.hrl").
@@ -6,9 +8,14 @@
 -compile([export_all, nowarn_export_all]).
 
 all() ->
+    all_groups(os:getenv("DB")).
+
+all_groups(false) ->
     [{group, mariadb},
      {group, pgsql},
-     {group, mysql}].
+     {group, mysql}];
+all_groups(DB) ->
+    [{group, list_to_atom(DB)}].
 
 groups() ->
     [{pgsql, [sequence], cases()},
