@@ -10,6 +10,9 @@ spec:
   - protocol: TCP
     port: 5222
     targetPort: 5222
+  - protocol: TCP
+    port: 5223
+    targetPort: 5223
   selector:
     app: mongooseim
   type: NodePort
