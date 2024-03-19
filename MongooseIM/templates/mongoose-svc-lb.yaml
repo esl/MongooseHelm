@@ -14,6 +14,10 @@ spec:
     protocol: TCP
     port: 5222
     targetPort: 5222
+  - name: c2s-tls
+    protocol: TCP
+    port: 5223
+    targetPort: 5223
   - name: bosh-ws
     protocol: TCP
     port: 5280

@@ -51,6 +51,8 @@ spec:
           containerPort: 4369
         - name: c2s
           containerPort: 5222
+        - name: c2s-tls
+          containerPort: 5223
         - name: s2s
           containerPort: 5269
         - name: bosh-ws

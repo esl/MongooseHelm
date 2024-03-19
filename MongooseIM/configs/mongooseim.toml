@@ -111,6 +111,15 @@
   tls.verify_mode = "none"
   tls.certfile = "priv/ssl/{{ .Values.certs.fullChainWithKey }}"
 
+[[listen.c2s]]
+  port = 5223
+  access = "c2s"
+  shaper = "c2s_shaper"
+  max_stanza_size = 65536
+  tls.mode = "tls"
+  tls.verify_mode = "none"
+  tls.certfile = "priv/ssl/{{ .Values.certs.fullChainWithKey }}"
+
 [[listen.s2s]]
   port = 5269
   shaper = "s2s_shaper"

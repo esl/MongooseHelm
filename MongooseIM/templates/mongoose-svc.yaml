@@ -12,6 +12,9 @@ spec:
   - name: c2s
     port: 5222
     targetPort: 5222
+  - name: c2s-tls
+    port: 5223
+    targetPort: 5223
   - name: s2s
     port: 5269
     targetPort: 5269
