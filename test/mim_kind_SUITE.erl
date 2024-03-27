@@ -25,7 +25,7 @@ groups() ->
 cases() ->
    [start_3_nodes_cluster,
     upgrade_3_nodes_cluster,
-    pod_disappears_with_users_connected].
+    {testcase, pod_disappears_with_users_connected, [{repeat_until_any_fail, 20}]}].
 
 init_per_group(pgsql, Config) ->
     [{rdbms_driver, pgsql} | Config];
@@ -39,8 +39,8 @@ end_per_group(_, Config) ->
 
 tag() ->
     %% You can specify a docker tag to test using:
-    %% "PR-4185".
-    "latest".
+    "PR-4251".
+    %%"latest".
 
 helm_args(N, Driver) ->
     #{"image.tag" => tag(),
@@ -100,7 +100,7 @@ pod_disappears_with_users_connected(_Config) ->
     register_users(UserCount),
     run_amoc(UserCount),
     %% Disconnect one node
-    {0, _} = run("kubectl delete pod mongooseim-0 --force"),
+    {0, _} = run("kubectl delete pod mongooseim-0"),
     %% We could also try to upgrade cluster, instead of disconnect
 %   upgrade_3_nodes_cluster(Config),
     run("kubectl wait statefulset mongooseim --for jsonpath=status.availableReplicas=2 --timeout=2m"),
