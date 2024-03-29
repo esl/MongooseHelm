@@ -100,7 +100,7 @@ pod_disappears_with_users_connected(_Config) ->
     register_users(UserCount),
     run_amoc(UserCount),
     %% Disconnect one node
-    {0, _} = run("kubectl delete pod mongooseim-0 --force"),
+    {0, _} = run("kubectl delete pod mongooseim-0"),
     %% We could also try to upgrade cluster, instead of disconnect
 %   upgrade_3_nodes_cluster(Config),
     run("kubectl wait statefulset mongooseim --for jsonpath=status.availableReplicas=2 --timeout=2m"),
