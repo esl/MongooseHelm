@@ -26,6 +26,10 @@ spec:
     protocol: TCP
     port: 5285
     targetPort: 5285
+  - name: s2s
+    protocol: TCP
+    port: 5269
+    targetPort: 5269
   - name: gql-dom-admin
     protocol: TCP
     port: 5541
