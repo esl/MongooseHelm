@@ -56,6 +56,6 @@ helm template desired-chart --output-dir desired-path
 Where `desired-chart` is the desired chart to obtain (MongooseIM or MongoosePush) and `desired-path` is the path where you want to output the k8s yaml definitions.
 
 [MIM]: https://github.com/esl/MongooseIM
-[MIM-docker]: https://hub.docker.com/r/mongooseim/mongooseim/
+[MIM-docker]: https://hub.docker.com/r/erlangsolutions/mongooseim/
 [MPush-docker]: https://hub.docker.com/r/mongooseim/mongoose-push
 [sts]: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/
