@@ -67,6 +67,8 @@ spec:
           containerPort: 5541
         - name: gql-user
           containerPort: 5561
+        - name: prometheus
+          containerPort: 9091
         {{- if .Values.resources }}
         {{-   with .Values.resources }}
         resources:

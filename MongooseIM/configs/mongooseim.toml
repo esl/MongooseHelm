@@ -8,7 +8,6 @@
   hosts = ["localhost"]
   registration_timeout = "infinity"
   language = "en"
-  all_metrics_are_global = false
   sm_backend = "{{ .Values.volatileDatabase }}"
   component_backend = "{{ .Values.volatileDatabase }}"
   s2s_backend = "{{ .Values.volatileDatabase }}"
@@ -102,6 +101,14 @@
     host = "_"
     path = "/api/graphql"
     schema_endpoint = "user"
+
+[[listen.http]]
+  port = 9091
+  transport.num_acceptors = 10
+
+  [[listen.http.handlers.mongoose_prometheus_handler]]
+    host = "_"
+    path = "/metrics"
 
 [[listen.c2s]]
   port = 5222

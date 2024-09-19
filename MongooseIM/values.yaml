@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: mongooseim/mongooseim
+  repository: erlangsolutions/mongooseim
   pullPolicy: IfNotPresent
   tag: ""
 

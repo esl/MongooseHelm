@@ -36,6 +36,9 @@ spec:
   - name: gql-user
     port: 5561
     targetPort: 5561
+  - name: prometheus
+    port: 9091
+    targetPort: 9091
   # Headless service
   clusterIP: None
   publishNotReadyAddresses: true
