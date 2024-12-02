@@ -52,6 +52,9 @@ affinity: {}
 loadBalancerIP: ""
 loadBalancerAnnotations: {}
 
+loadbalancer:
+  enabled: true
+
 nodeport:
   enabled: false
 
