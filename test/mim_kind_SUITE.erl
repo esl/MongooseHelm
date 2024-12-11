@@ -247,7 +247,8 @@ cmd(Cmd, Opts) ->
         [{cd, repo_path()}, exit_status, use_stdio, binary]
         ++ [stderr_to_stdout || maps:get(stderr_to_stdout, Opts, true)],
     Port = erlang:open_port({spawn, Cmd}, PortOpts),
-    receive_loop(Cmd, Port, <<>>).
+    Info = #{task => run_cmd, cmd => Cmd, opts => Opts},
+    long_task:run_tracked(Info, fun() -> receive_loop(Cmd, Port, <<>>) end).
 
 repo_path() ->
     {ok, CWD} = file:get_cwd(),
@@ -258,6 +259,8 @@ run_json(Cmd) ->
     jiffy:decode(Text, [return_maps]).
 
 receive_loop(Cmd, Port, Res) ->
+    %% The dictionary is printed from the long_task module
+    put('__debug_receive_loop', Res),
     receive
         {Port, {data, Data}} ->
             receive_loop(Cmd, Port, <<Res/binary, Data/binary>>);
