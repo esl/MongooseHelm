@@ -5,10 +5,21 @@
 
 check_logs(LogBinary) ->
     LogLines = string:split(binary_to_list(LogBinary), "\n", all),
-    FilteredLines = lists:filter(fun(Line) -> starts_with(Line, "when=") end, LogLines),
+    FilteredLines = lists:filter(fun(Line) -> filter_line(Line) end, LogLines),
     ParsedLogs = lists:map(fun extract_logs/1, FilteredLines),
-    ?assertEqual(3, length(ParsedLogs)),
+    ?assertEqual(3, length(ParsedLogs), ParsedLogs),
     lists:foreach(fun(Log) -> check_log(Log) end, ParsedLogs).
+
+filter_line(Line) ->
+    starts_with(Line, "when=") andalso
+        not lists:any(fun(Txt) -> contains(Line, Txt) end, ignore_strings()).
+
+%% Return true if Txt is in Line
+contains(Line, Txt) ->
+    string:str(Line, Txt) > 0.
+
+ignore_strings() ->
+    ["system_memory_high_watermark"].
 
 starts_with(Line, Prefix) ->
     case string:prefix(Line, Prefix) of
