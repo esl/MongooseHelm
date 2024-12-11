@@ -100,7 +100,9 @@ jobs:
       - run:
           name: Run common tests
           command: |
-            rebar3 ct
+            # --verbosity makes ct:pal printed to the shell
+            # --readable makes ct:pal printed ASAP
+            rebar3 ct -v --verbosity=100 --readable=false
 
 executors:
   otp_26:
