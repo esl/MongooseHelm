@@ -141,11 +141,11 @@ run_amoc(SessionCount) ->
     run("kubectl cp _build/amoc_args.cfg " ++ Pod ++ ":/tmp/amoc_args.cfg"),
     %% Wait for for Erlang VM to start
     run_wait("kubectl exec -t " ++ Pod ++ " -- "
-             "/amoc_arsenal_xmpp/_build/default/rel/amoc_arsenal_xmpp/bin/amoc_arsenal_xmpp "
+             "/amoc_arsenal_xmpp/_build/prod/rel/amoc_arsenal_xmpp/bin/amoc_arsenal_xmpp "
              "rpc os timestamp \"[]\""),
     run("kubectl exec -t " ++ Pod ++ " -- "
         "bash -c '"
-        "/amoc_arsenal_xmpp/_build/default/rel/amoc_arsenal_xmpp/bin/amoc_arsenal_xmpp "
+        "/amoc_arsenal_xmpp/_build/prod/rel/amoc_arsenal_xmpp/bin/amoc_arsenal_xmpp "
         "rpc amoc do $(cat /tmp/amoc_args.cfg)'"),
     wait_for_session_count("mongooseim-0", SessionCount).
 
