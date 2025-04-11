@@ -1,3 +1,4 @@
 *.sw*
 # *.tgz - do not ignore files that are committed to the 'packages' branch
 .DS_Store
+_build
