@@ -40,7 +40,7 @@ end_per_group(_, Config) ->
 tag() ->
     %% You can specify a docker tag to test using:
     %% "PR-4185".
-    "latest".
+    "6.3.3".
 
 helm_args(N, Driver) ->
     #{"image.tag" => tag(),
@@ -234,10 +234,10 @@ get_schema(pgsql) ->
     run("curl https://raw.githubusercontent.com/esl/MongooseIM/master/priv/pg.sql -o _build/pg.sql").
 
 psql(Args) ->
-    "kubectl exec ct-pg-postgresql-0 -- sh -c 'PGPASSWORD=$POSTGRES_PASSWORD psql " ++ Args ++ "'".
+    "kubectl exec ct-pg-postgresql-0 -- sh -c \"PGPASSWORD=$(kubectl get secret ct-pg-postgresql -o jsonpath='{.data.postgres-password}' | base64 -d) psql " ++ Args ++ "\"".
 
 run_psql_query(Query) ->
-    run(psql(" -U postgres -d mongooseim -c \"" ++ Query ++ "\"")).
+    run(psql(" -U postgres -d mongooseim -c '" ++ Query ++ "'")).
 
 cmd(Cmd) ->
    cmd(Cmd, #{}).
