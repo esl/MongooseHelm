@@ -115,7 +115,8 @@
   shaper = "normal"
   max_stanza_size = 65536
   tls.verify_mode = "none"
-  tls.certfile = "priv/ssl/{{ .Values.certs.fullChainWithKey }}"
+  tls.certfile = "priv/ssl/{{ .Values.certs.fullChain }}"
+  tls.keyfile = "priv/ssl/{{ .Values.certs.privKey }}"
 
 [[listen.c2s]]
   port = 5223
@@ -124,7 +125,8 @@
   max_stanza_size = 65536
   tls.mode = "tls"
   tls.verify_mode = "none"
-  tls.certfile = "priv/ssl/{{ .Values.certs.fullChainWithKey }}"
+  tls.certfile = "priv/ssl/{{ .Values.certs.fullChain }}"
+  tls.keyfile = "priv/ssl/{{ .Values.certs.privKey }}"
 
 [[listen.s2s]]
   port = 5269
@@ -319,7 +321,8 @@
   port = 5269
 
   [s2s.outgoing.tls]
-    certfile = "priv/ssl/{{ .Values.certs.fullChainWithKey }}"
+    certfile = "priv/ssl/{{ .Values.certs.fullChain }}"
+    keyfile = "priv/ssl/{{ .Values.certs.privKey }}"
 
 #[[host_config]]
 #  host = "anonymous.localhost"
