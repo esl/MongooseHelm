@@ -40,7 +40,7 @@ end_per_group(_, Config) ->
 tag() ->
     %% You can specify a docker tag to test using:
     %% "PR-4185".
-    "6.3.3".
+    "6.4.0".
 
 helm_args(N, Driver) ->
     #{"image.tag" => tag(),
