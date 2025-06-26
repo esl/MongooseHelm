@@ -76,4 +76,3 @@ rdbms:
 certs:
   fullChain: "fake_cert.pem"
   privKey: "fake_key.pem"
-  fullChainWithKey: "fake_server.pem"
