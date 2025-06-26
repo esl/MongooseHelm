@@ -11,7 +11,6 @@
   sm_backend = "{{ .Values.volatileDatabase }}"
   component_backend = "{{ .Values.volatileDatabase }}"
   s2s_backend = "{{ .Values.volatileDatabase }}"
-  max_fsm_queue = 1000
 
 [[listen.http]]
   port = 5280
@@ -113,7 +112,7 @@
 [[listen.c2s]]
   port = 5222
   access = "c2s"
-  shaper = "c2s_shaper"
+  shaper = "normal"
   max_stanza_size = 65536
   tls.verify_mode = "none"
   tls.certfile = "priv/ssl/{{ .Values.certs.fullChainWithKey }}"
@@ -121,7 +120,7 @@
 [[listen.c2s]]
   port = 5223
   access = "c2s"
-  shaper = "c2s_shaper"
+  shaper = "normal"
   max_stanza_size = 65536
   tls.mode = "tls"
   tls.verify_mode = "none"
@@ -129,13 +128,13 @@
 
 [[listen.s2s]]
   port = 5269
-  shaper = "s2s_shaper"
+  shaper = "fast"
   max_stanza_size = 131072
 
-[[listen.service]]
+[[listen.component]]
   port = 8888
   access = "all"
-  shaper_rule = "fast"
+  shaper = "fast"
   ip_address = "127.0.0.1"
   password = "secret"
 
@@ -261,15 +260,6 @@
     {acl = "all", value = "allow"}
   ]
 
-  c2s_shaper = [
-    {acl = "admin", value = "none"},
-    {acl = "all", value = "normal"}
-  ]
-
-  s2s_shaper = [
-    {acl = "all", value = "fast"}
-  ]
-
   muc_admin = [
     {acl = "admin", value = "allow"}
   ]
@@ -323,10 +313,13 @@
   ]
 
 [s2s]
-  use_starttls = "optional"
-  certfile = "priv/ssl/{{ .Values.certs.fullChainWithKey }}"
   default_policy = "deny"
-  outgoing.port = 5269
+
+[s2s.outgoing]
+  port = 5269
+
+  [s2s.outgoing.tls]
+    certfile = "priv/ssl/{{ .Values.certs.fullChainWithKey }}"
 
 #[[host_config]]
 #  host = "anonymous.localhost"
