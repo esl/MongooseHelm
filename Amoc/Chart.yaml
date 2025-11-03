@@ -8,10 +8,10 @@ keywords:
   - load-testing
   - erlang
 type: application
-version: 0.4.0
+version: 0.4.1
 appVersion: 1.1.1
 home: https://github.com/esl/amoc
-icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+icon: https://raw.githubusercontent.com/esl/MongooseIM/master/doc/MongooseIM_logo.png
 maintainers:
   - name: MongooseIM Team
     email: mongooseim@erlang-solutions.com
