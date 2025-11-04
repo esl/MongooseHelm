@@ -172,13 +172,17 @@ run(Cmd, Opts) ->
     ct:log("CMD ~ts~n~pms~nResult ~p ~ts", [Cmd, Diff, Code, Res]),
     {Code, Res}.
 
-db_args() ->
-    #{"auth.database" => "mongooseim",
+mysql_db_args() ->
+    #{"image.repository" => "bitnamilegacy/mysql",
+      "image.tag" => "9.4.0-debian-12-r1",
+      "auth.database" => "mongooseim",
       "auth.username" => "mongooseim",
       "auth.password" => "mongooseim"}.
 
 galera_db_args() ->
-    #{"db.name" => "mongooseim",
+    #{"image.repository" => "bitnamilegacy/mariadb-galera",
+      "image.tag" => "12.0.2-debian-12-r0",
+      "db.name" => "mongooseim",
       "db.user" => "mongooseim",
       "db.password" => "mongooseim",
       "replicaCount" => "1",
@@ -204,7 +208,7 @@ install_db(mysql) ->
     run("helm uninstall ct-mysql"),
     %% Remove old volume
     run("kubectl delete pvc data-ct-mysql-0"),
-    run("helm install ct-mysql oci://registry-1.docker.io/bitnamicharts/mysql " ++ format_args(db_args())),
+    run("helm install ct-mysql oci://registry-1.docker.io/bitnamicharts/mysql " ++ format_args(mysql_db_args())),
     get_schema(mysql),
     Pod = "ct-mysql-0",
     wait_for_pod_to_be_ready(Pod),
