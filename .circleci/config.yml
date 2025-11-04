@@ -78,7 +78,7 @@ jobs:
       - run:
           name: Create Kubernetes Cluster
           command: |
-            kind create cluster --loglevel debug
+            kind create cluster
       - run:
           name: Install kubectl
           command: |
