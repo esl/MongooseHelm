@@ -1,10 +1,10 @@
 version: 2.1
 
 references:
-  - &OTP26 mongooseim/cimg-erlang:26.1.2
-  - &HELM_VERSION v3.10.1
-  - &KIND_VERSION v0.20.0
-  - &K8S_VERSION v1.27.3
+  - &OTP27 mongooseim/cimg-erlang:27.1.2
+  - &HELM_VERSION v3.19.0
+  - &KIND_VERSION v0.30.0
+  - &K8S_VERSION v1.31.0
 
 orbs:
   helm: circleci/helm@1.2.0
@@ -55,7 +55,7 @@ jobs:
     parameters:
       database:
         type: string
-    executor: otp_26
+    executor: otp_27
     environment:
       KIND_VERSION: *KIND_VERSION
       K8S_VERSION: *K8S_VERSION
@@ -78,7 +78,7 @@ jobs:
       - run:
           name: Create Kubernetes Cluster
           command: |
-            kind create cluster --loglevel debug
+            kind create cluster
       - run:
           name: Install kubectl
           command: |
@@ -105,9 +105,9 @@ jobs:
             rebar3 ct -v --verbosity=100 --readable=false
 
 executors:
-  otp_26:
+  otp_27:
     docker:
-      - image: *OTP26
+      - image: *OTP27
     resource_class: medium+
 
 workflows:
