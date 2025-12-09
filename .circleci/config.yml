@@ -1,0 +1,132 @@
+version: 2.1
+
+references:
+  - &OTP27 mongooseim/cimg-erlang:27.1.2
+  - &HELM_VERSION v3.19.0
+  - &KIND_VERSION v0.30.0
+  - &K8S_VERSION v1.31.0
+
+orbs:
+  helm: circleci/helm@1.2.0
+
+jobs:
+  helm-lint:
+    docker:
+      - image: cimg/go:1.15.6
+    steps:
+      - checkout
+      - helm/install-helm-client:
+          version: *HELM_VERSION
+      - run:
+          name: Lint charts
+          command: helm lint MongooseIM/ MongoosePush/
+  packages-deploy:
+    docker:
+      - image: cimg/go:1.15.6
+    steps:
+      - checkout
+      - add_ssh_keys
+      - helm/install-helm-client:
+          version: *HELM_VERSION
+      - run:
+          name: Configure Git
+          command: |
+            git config --global user.email "mongooseim@erlang-solutions.com"
+            git config --global user.name "Mongoose"
+      - run:
+          name: Generate packages and orphan commit
+          command: |
+            git fetch origin packages && \
+            helm package MongooseIM/ MongoosePush/ && \
+            git checkout origin/packages -- index.yaml '*.tgz' && \
+            git checkout --orphan tmp && \
+            git rm --cached . -r && \
+            helm repo index ./ --url https://esl.github.io/MongooseHelm/
+            git add *.tgz index.yaml .circleci/config.yml && \
+            git commit -m "Mongoose Charts"
+      - run:
+          name: Update the `packages` branch to point to this commit and push it
+          command: |
+            git checkout packages -f && \
+            git reset tmp --hard && \
+            git branch -D tmp && \
+            git push origin packages --force
+  k8s-with-kind:
+    parameters:
+      database:
+        type: string
+    executor: otp_27
+    environment:
+      KIND_VERSION: *KIND_VERSION
+      K8S_VERSION: *K8S_VERSION
+      DB: << parameters.database >>
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Install KinD
+          command: |
+            curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/$KIND_VERSION/kind-linux-amd64
+            chmod +x kind
+            sudo mv kind /usr/local/bin/
+      - run:
+          name: Install Rebar3
+          command: |
+            curl -Lo rebar3 https://s3.amazonaws.com/rebar3/rebar3
+            chmod +x rebar3
+            sudo mv rebar3 /usr/local/bin/
+      - run:
+          name: Create Kubernetes Cluster
+          command: |
+            kind create cluster
+      - run:
+          name: Install kubectl
+          command: |
+            curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/$K8S_VERSION/bin/linux/amd64/kubectl
+            chmod +x kubectl
+            sudo mv kubectl /usr/local/bin/
+      - run:
+          name: Port forwarding to the remote Docker
+          command: |
+            APISERVER_PORT=$(kubectl config view -o jsonpath='{.clusters[].cluster.server}' | cut -d: -f 3 -) && \
+            ssh -f -N -L 127.0.0.1:$APISERVER_PORT:127.0.0.1:$APISERVER_PORT remote-docker
+      - run:
+          name: Run Tests
+          command: |
+            kubectl cluster-info --context kind-kind
+            kubectl get pods --all-namespaces
+      - helm/install-helm-client:
+          version: *HELM_VERSION
+      - run:
+          name: Run common tests
+          command: |
+            # --verbosity makes ct:pal printed to the shell
+            # --readable makes ct:pal printed ASAP
+            rebar3 ct -v --verbosity=100 --readable=false
+
+executors:
+  otp_27:
+    docker:
+      - image: *OTP27
+    resource_class: medium+
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - helm-lint:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: packages
+      - k8s-with-kind:
+          matrix:
+            parameters:
+              database: [mariadb, pgsql, mysql]
+      - packages-deploy:
+          requires:
+            - helm-lint
+          filters:
+            branches:
+              only: master
