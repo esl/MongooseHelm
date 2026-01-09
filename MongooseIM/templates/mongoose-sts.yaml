@@ -32,10 +32,8 @@ spec:
         image: {{ .Values.image.repository }}:{{or .Values.image.tag .Chart.AppVersion}}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
-          {{- if not $mnesia_enabled }}
           - name: JOIN_CLUSTER
-            value: "false"
-          {{- end }}
+            value: "{{ $mnesia_enabled }}"
           - name: MASTER_ORDINAL
             value: "0"
           - name: NODE_TYPE
