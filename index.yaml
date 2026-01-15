@@ -1,0 +1,524 @@
+apiVersion: v1
+entries:
+  mongooseim:
+  - apiVersion: v2
+    appVersion: 6.5.0
+    created: "2026-01-15T09:55:57.652678212Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: 1751ecad96f0675e4a9772a6764edd43e3a6cf7252c149244e8ae7391512da6c
+    home: https://github.com/esl/MongooseIM
+    icon: https://raw.githubusercontent.com/esl/MongooseIM/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.4.9.tgz
+    version: 0.4.9
+  - apiVersion: v2
+    appVersion: 6.4.0
+    created: "2026-01-15T09:55:57.651675214Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: 8a605cccb43c808cf25f63bc184500e365b458e50e9faf2eb408c094724d4fd6
+    home: https://github.com/esl/MongooseIM
+    icon: https://raw.githubusercontent.com/esl/MongooseIM/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.4.8.tgz
+    version: 0.4.8
+  - apiVersion: v2
+    appVersion: 6.4.0
+    created: "2026-01-15T09:55:57.650608592Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: f013d5529161a31e48798194dafe45d6c071846549787e0df206cac2393e5c31
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.4.7.tgz
+    version: 0.4.7
+  - apiVersion: v2
+    appVersion: 6.4.0
+    created: "2026-01-15T09:55:57.649546941Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: 17d0b5c84fc382ea9a9ab2e03469a7ebdec12be7f6384a2571870fa23c32772f
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.4.6.tgz
+    version: 0.4.6
+  - apiVersion: v2
+    appVersion: 6.3.3
+    created: "2026-01-15T09:55:57.648466983Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: 013603e4a8955124114f64d1cccd332d5df4aa5b69d892a00e24b688bf90c732
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.4.5.tgz
+    version: 0.4.5
+  - apiVersion: v2
+    appVersion: 6.3.2
+    created: "2026-01-15T09:55:57.647348736Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: 849391bc09a94f90dc23c5542dcde60c488dde0ac5bd01ed2fd7312df05ba71c
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.4.4.tgz
+    version: 0.4.4
+  - apiVersion: v2
+    appVersion: 6.3.1
+    created: "2026-01-15T09:55:57.64552418Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: d63c2a8a1b4839fcc2e82671b358350a0f813688c9081efcc8cb58139ed7d24f
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.4.3.tgz
+    version: 0.4.3
+  - apiVersion: v2
+    appVersion: 6.3.0
+    created: "2026-01-15T09:55:57.644364415Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: 42e9b583da48017d5c6914b28edeff5ff413d1b5f1723cfcb86e209aaab7e14d
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.4.2.tgz
+    version: 0.4.2
+  - apiVersion: v2
+    appVersion: 6.2.1
+    created: "2026-01-15T09:55:57.643218056Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: 8cec70f27ec305cadb4b7947ea0afae56e1d2edaf2cc7f2e9860212ed98c9f4f
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.4.1.tgz
+    version: 0.4.1
+  - apiVersion: v2
+    appVersion: 6.2.0
+    created: "2026-01-15T09:55:57.642133368Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: 83a95b278a3fe7d634fa10b2cb24a400255aff639727bf9fbd5c1c7757402261
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
+    appVersion: 6.1.0
+    created: "2026-01-15T09:55:57.641117114Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: 20a8775d1a497c0d57a3edcbae36a6619b2a508f0676116be8fdfd78651a7c83
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.3.9.tgz
+    version: 0.3.9
+  - apiVersion: v2
+    appVersion: 6.1.0
+    created: "2026-01-15T09:55:57.640252168Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: 64fc3b3a952c2b1edb1037f0d64cb4ee1ac2448cd3d81b53dcc72119b6e2b590
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.3.8.tgz
+    version: 0.3.8
+  - apiVersion: v2
+    appVersion: 6.0.0
+    created: "2026-01-15T09:55:57.639398147Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: 55f700d0f24295b0158435bf27103519301408c695c562a7ccf084a0fadd0ad7
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.3.7.tgz
+    version: 0.3.7
+  - apiVersion: v2
+    appVersion: 5.1.0
+    created: "2026-01-15T09:55:57.638517863Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: f0d2a11a8c26c60a2f130cbe01e98ccbbd66a479bb4bc2097e5ecee0876655c6
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.3.5.tgz
+    version: 0.3.5
+  - apiVersion: v2
+    appVersion: 5.0.0
+    created: "2026-01-15T09:55:57.637683093Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: c503e322500b5ff0cf8ec1895647498c07d79b68116777210ee9437a7053703a
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.3.4.tgz
+    version: 0.3.4
+  - apiVersion: v2
+    appVersion: 5.0.0
+    created: "2026-01-15T09:55:57.636881676Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: 418d575a58b8f82590a0d2e1082b1968b31182300e2bbc05552404e7c6d21b9f
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.3.3.tgz
+    version: 0.3.3
+  - apiVersion: v2
+    appVersion: 4.2.0
+    created: "2026-01-15T09:55:57.636059433Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: 23fe2a1d31c85d170e8ad3e8ac18bb8b0ac130169b22d2d799a9e65289e17cb2
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.3.2.tgz
+    version: 0.3.2
+  - apiVersion: v2
+    appVersion: 4.1.0
+    created: "2026-01-15T09:55:57.635220945Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: 63d9c5b2b7f2c51bad60e8809b1aa9bad747862922b5ee1b34e85f4b4e08c8ce
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v2
+    appVersion: 4.0.1
+    created: "2026-01-15T09:55:57.634369153Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: 96562b903569206268d9e9502fad94c212cbba9bc3d19158b5aa5766756acc47
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
+    appVersion: 4.0.0
+    created: "2026-01-15T09:55:57.633519257Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: b170d6e6ea1d8c1cea934d357c77c9bca0291e387d68723f663e57de3535feb7
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 3.7.1
+    created: "2026-01-15T09:55:57.632805302Z"
+    description: MongooseIM — The best Enterprise Instant Messaging Solution is the
+      one built for your business.
+    digest: 2fc9130370623178d9c507c41249e2abb058ca571c003b6cd4383f50679584de
+    home: https://github.com/esl/MongooseIM
+    icon: https://github.com/esl/MongooseIM/blob/master/doc/MongooseIM_logo.png
+    keywords:
+    - mongooseim
+    - xmpp
+    - messaging
+    - chat
+    - erlang
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongooseim
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongooseim-0.1.0.tgz
+    version: 0.1.0
+  mongoosepush:
+  - apiVersion: v2
+    appVersion: 2.1.0
+    created: "2026-01-15T09:55:57.6544433Z"
+    description: A Helm chart for MongoosePush in Kubernetes
+    digest: c6d37bd7f1e74f9d5331d805f0192c3d61cfde6dd2f731aa6a36ebbf04aab0d9
+    home: https://github.com/esl/MongoosePush
+    keywords:
+    - mongoosepush
+    - messaging
+    - push notifications
+    - elixir
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongoosepush
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongoosepush-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 2.1.0
+    created: "2026-01-15T09:55:57.653839621Z"
+    description: A Helm chart for MongoosePush in Kubernetes
+    digest: 0d10b48a23ebe5f124c86076ea7feeb67448fc59c2cc654e999ecabaa97115a7
+    home: https://github.com/esl/MongoosePush
+    keywords:
+    - mongoosepush
+    - messaging
+    - push notifications
+    - elixir
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongoosepush
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongoosepush-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 2.1.0
+    created: "2026-01-15T09:55:57.65325467Z"
+    description: A Helm chart for MongoosePush in Kubernetes
+    digest: ba62fed01741237e5ba6fadc7268a27b58fb8804d42ee29f917314eeb1c9e911
+    home: https://github.com/esl/MongoosePush
+    keywords:
+    - mongoosepush
+    - messaging
+    - push notifications
+    - elixir
+    maintainers:
+    - email: mongooseim@erlang-solutions.com
+      name: MongooseIM Team
+    name: mongoosepush
+    type: application
+    urls:
+    - https://esl.github.io/MongooseHelm/mongoosepush-0.1.0.tgz
+    version: 0.1.0
+generated: "2026-01-15T09:55:57.631991184Z"
