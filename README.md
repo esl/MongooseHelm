@@ -57,5 +57,5 @@ Where `desired-chart` is the desired chart to obtain (MongooseIM or MongoosePush
 
 [MIM]: https://github.com/esl/MongooseIM
 [MIM-docker]: https://hub.docker.com/r/erlangsolutions/mongooseim/
-[MPush-docker]: https://hub.docker.com/r/mongooseim/mongoose-push
+[MPush-docker]: https://hub.docker.com/r/erlangsolutions/mongoose-push
 [sts]: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/
