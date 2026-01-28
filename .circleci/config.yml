@@ -1,7 +1,7 @@
 version: 2.1
 
 references:
-  - &OTP27 mongooseim/cimg-erlang:27.1.2
+  - &OTP27 erlangsolutions/erlang:cimg-27.1.2
   - &HELM_VERSION v3.19.0
   - &KIND_VERSION v0.30.0
   - &K8S_VERSION v1.31.0
