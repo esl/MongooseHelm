@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: mongooseim/mongoose-push
+  repository: erlangsolutions/mongoose-push
   pullPolicy: IfNotPresent
   tag: ""
 
